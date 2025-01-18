@@ -9,6 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { AnimatePresence } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/Sidebar";
+import { Header } from "@/components/layout/Header";
 
 const STEPS = ["Job URL", "Resume & Cover Letter", "Personal Info", "Review"];
 
@@ -209,32 +212,40 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-6">
-      <div className="max-w-4xl mx-auto pt-12 pb-24">
-        <h1 className="text-4xl font-bold text-navy text-center mb-12">
-          AI Job Application
-        </h1>
-        <WizardProgress currentStep={currentStep} steps={STEPS} />
-        <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
-        <div className="flex justify-end space-x-4 mt-8">
-          {currentStep > 1 && (
-            <Button
-              variant="outline"
-              onClick={handleBack}
-              className="w-32"
-            >
-              Back
-            </Button>
-          )}
-          <Button
-            onClick={handleNext}
-            className="w-32 bg-navy hover:bg-navy-light text-white"
-          >
-            {currentStep === 4 ? "Submit" : "Next"}
-          </Button>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+        <AppSidebar />
+        <div className="flex-1">
+          <Header />
+          <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-6">
+            <div className="max-w-4xl mx-auto pt-12 pb-24">
+              <h1 className="text-4xl font-bold text-navy text-center mb-12">
+                AI Job Application
+              </h1>
+              <WizardProgress currentStep={currentStep} steps={STEPS} />
+              <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
+              <div className="flex justify-end space-x-4 mt-8">
+                {currentStep > 1 && (
+                  <Button
+                    variant="outline"
+                    onClick={handleBack}
+                    className="w-32"
+                  >
+                    Back
+                  </Button>
+                )}
+                <Button
+                  onClick={handleNext}
+                  className="w-32 bg-navy hover:bg-navy-light text-white"
+                >
+                  {currentStep === 4 ? "Submit" : "Next"}
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
 
