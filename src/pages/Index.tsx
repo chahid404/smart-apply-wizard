@@ -217,26 +217,26 @@ const Index = () => {
         <AppSidebar />
         <div className="flex-1">
           <Header />
-          <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-6">
-            <div className="max-w-4xl mx-auto pt-12 pb-24">
-              <h1 className="text-4xl font-bold text-navy text-center mb-12">
+          <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-4 sm:p-6">
+            <div className="max-w-4xl mx-auto pt-6 sm:pt-12 pb-12 sm:pb-24">
+              <h1 className="text-3xl sm:text-4xl font-bold text-navy text-center mb-8 sm:mb-12 px-4">
                 AI Job Application
               </h1>
               <WizardProgress currentStep={currentStep} steps={STEPS} />
               <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
-              <div className="flex justify-end space-x-4 mt-8">
+              <div className="flex justify-end space-x-4 mt-8 px-4">
                 {currentStep > 1 && (
                   <Button
                     variant="outline"
                     onClick={handleBack}
-                    className="w-32"
+                    className="w-24 sm:w-32"
                   >
                     Back
                   </Button>
                 )}
                 <Button
                   onClick={handleNext}
-                  className="w-32 bg-navy hover:bg-navy-light text-white"
+                  className="w-24 sm:w-32 bg-navy hover:bg-navy-light text-white"
                 >
                   {currentStep === 4 ? "Submit" : "Next"}
                 </Button>
