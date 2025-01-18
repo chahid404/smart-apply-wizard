@@ -209,7 +209,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-sand p-6">
+    <div className="min-h-screen bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-6">
       <div className="max-w-4xl mx-auto pt-12 pb-24">
         <h1 className="text-4xl font-bold text-navy text-center mb-12">
           AI Job Application
