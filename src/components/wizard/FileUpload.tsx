@@ -22,10 +22,6 @@ export const FileUpload = ({ onFileSelect, selectedFile }: FileUploadProps) => {
     onDrop,
     accept: {
       "application/pdf": [".pdf"],
-      "application/msword": [".doc"],
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [
-        ".docx",
-      ],
     },
     maxFiles: 1,
   });
@@ -37,27 +33,14 @@ export const FileUpload = ({ onFileSelect, selectedFile }: FileUploadProps) => {
           {...getRootProps()}
           className={cn(
             "border-2 border-dashed rounded-lg p-8 transition-colors duration-300 cursor-pointer",
-            isDragActive
-              ? "border-mint bg-mint/10"
-              : "border-gray-200 hover:border-mint"
+            isDragActive ? "border-mint bg-mint/10" : "border-gray-200 hover:border-mint"
           )}
         >
           <input {...getInputProps()} />
           <div className="flex flex-col items-center text-center">
-            <Upload
-              className={cn(
-                "w-12 h-12 mb-4 transition-colors duration-300",
-                isDragActive ? "text-mint" : "text-gray-400"
-              )}
-            />
-            <p className="text-sm text-gray-600 mb-2">
-              {isDragActive
-                ? "Drop your resume here"
-                : "Drag & drop your resume here"}
-            </p>
-            <p className="text-xs text-gray-400">
-              Supports PDF, DOC, and DOCX files
-            </p>
+            <Upload className={cn("w-12 h-12 mb-4 transition-colors duration-300", isDragActive ? "text-mint" : "text-gray-400")} />
+            <p className="text-sm text-gray-600 mb-2">{isDragActive ? "Drop your resume here" : "Drag & drop your resume here"}</p>
+            <p className="text-xs text-gray-400">Supports only PDF files</p>
           </div>
         </div>
       ) : (
@@ -66,18 +49,12 @@ export const FileUpload = ({ onFileSelect, selectedFile }: FileUploadProps) => {
             <div className="flex items-center space-x-3">
               <File className="w-6 h-6 text-navy" />
               <div>
-                <p className="text-sm font-medium text-gray-700">
-                  {selectedFile.name}
-                </p>
-                <p className="text-xs text-gray-400">
-                  {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                </p>
+                <p className="text-sm font-medium text-gray-700">{selectedFile.name}</p>
+                <p className="text-xs text-gray-400">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
             </div>
-            <button
-              onClick={() => onFileSelect(null as any)}
-              className="p-1 hover:bg-gray-100 rounded-full transition-colors duration-300"
-            >
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            <button onClick={() => onFileSelect(null as any)} className="p-1 hover:bg-gray-100 rounded-full transition-colors duration-300">
               <X className="w-4 h-4 text-gray-400" />
             </button>
           </div>
