@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
 
 interface WizardLayoutProps {
   children: ReactNode;
@@ -13,7 +14,7 @@ export const WizardLayout = ({ children, title }: WizardLayoutProps) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="w-full max-w-3xl mx-auto bg-white rounded-xl shadow-sm p-4 sm:p-8"
+      className="w-full"
     >
       <h2 className="text-xl sm:text-2xl font-semibold text-navy mb-6">{title}</h2>
       {children}

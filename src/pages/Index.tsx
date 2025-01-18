@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
+import { Card } from "@/components/ui/card";
 
 const STEPS = ["Job URL", "Resume & Cover Letter", "Personal Info", "Review"];
 
@@ -222,25 +223,27 @@ const Index = () => {
               <h1 className="text-3xl sm:text-4xl font-bold text-navy text-center mb-8 sm:mb-12 px-4">
                 AI Job Application
               </h1>
-              <WizardProgress currentStep={currentStep} steps={STEPS} />
-              <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
-              <div className="flex justify-end space-x-4 mt-8 px-4">
-                {currentStep > 1 && (
+              <Card className="p-6 sm:p-8">
+                <WizardProgress currentStep={currentStep} steps={STEPS} />
+                <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
+                <div className="flex justify-end space-x-4 mt-8">
+                  {currentStep > 1 && (
+                    <Button
+                      variant="outline"
+                      onClick={handleBack}
+                      className="w-24 sm:w-32"
+                    >
+                      Back
+                    </Button>
+                  )}
                   <Button
-                    variant="outline"
-                    onClick={handleBack}
-                    className="w-24 sm:w-32"
+                    onClick={handleNext}
+                    className="w-24 sm:w-32 bg-navy hover:bg-navy-light text-white"
                   >
-                    Back
+                    {currentStep === 4 ? "Submit" : "Next"}
                   </Button>
-                )}
-                <Button
-                  onClick={handleNext}
-                  className="w-24 sm:w-32 bg-navy hover:bg-navy-light text-white"
-                >
-                  {currentStep === 4 ? "Submit" : "Next"}
-                </Button>
-              </div>
+                </div>
+              </Card>
             </div>
           </div>
         </div>

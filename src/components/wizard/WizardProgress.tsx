@@ -7,7 +7,7 @@ interface WizardProgressProps {
 
 export const WizardProgress = ({ currentStep, steps }: WizardProgressProps) => {
   return (
-    <div className="w-full max-w-3xl mx-auto mb-8 px-4 sm:px-0">
+    <div className="w-full mb-8">
       <div className="relative flex justify-between">
         {steps.map((step, index) => (
           <div key={step} className="flex flex-col items-center relative z-10">
