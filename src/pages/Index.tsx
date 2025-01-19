@@ -1,18 +1,17 @@
-import { useState } from "react";
-import { WizardProgress } from "@/components/wizard/WizardProgress";
-import { WizardLayout } from "@/components/wizard/WizardLayout";
-import { FileUpload } from "@/components/wizard/FileUpload";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { AnimatePresence } from "framer-motion";
-import { useToast } from "@/components/ui/use-toast";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
+import { AppSidebar } from "@/components/layout/Sidebar";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
+import { FileUpload } from "@/components/wizard/FileUpload";
+import { WizardLayout } from "@/components/wizard/WizardLayout";
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 const STEPS = ["Job URL", "Resume & Cover Letter", "Personal Info", "Review"];
 
@@ -21,18 +20,31 @@ const Index = () => {
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
-    generateCoverLetter: true,
-    coverLetter: "",
+    withExtraUserDetails: true,
+    extraUserDetails: "",
     name: "",
     email: "",
     phone: "",
   });
   const { toast } = useToast();
 
+  const isValidUrl = (url: string) => {
+    const urlPattern = new RegExp(
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$", // fragment locator
+      "i"
+    );
+    return !!urlPattern.test(url);
+  };
+
   const handleNext = () => {
-    if (currentStep === 1 && !formData.jobUrl) {
+    if (currentStep === 1 && (!formData.jobUrl || !isValidUrl(formData.jobUrl))) {
       toast({
-        title: "Please enter a job URL",
+        title: "Please enter a valid job URL",
         variant: "destructive",
       });
       return;
@@ -85,6 +97,14 @@ const Index = () => {
                   placeholder="https://example.com/job-posting"
                   value={formData.jobUrl}
                   onChange={(e) => setFormData({ ...formData, jobUrl: e.target.value })}
+                  onBlur={(e) => {
+                    if (!isValidUrl(e.target.value)) {
+                      toast({
+                        title: "Please enter a valid URL",
+                        variant: "destructive",
+                      });
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -101,17 +121,17 @@ const Index = () => {
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
                   <Switch
-                    id="generate-cover-letter"
-                    checked={formData.generateCoverLetter}
-                    onCheckedChange={(checked) => setFormData({ ...formData, generateCoverLetter: checked })}
+                    id="extra-user-details"
+                    checked={formData.withExtraUserDetails}
+                    onCheckedChange={(checked) => setFormData({ ...formData, withExtraUserDetails: checked })}
                   />
-                  <Label htmlFor="generate-cover-letter">Generate AI Cover Letter</Label>
+                  <Label htmlFor="extra-user-details">Add extra details about yourself</Label>
                 </div>
-                {formData.generateCoverLetter && (
+                {formData.withExtraUserDetails && (
                   <Textarea
-                    placeholder="Your cover letter will appear here..."
-                    value={formData.coverLetter}
-                    onChange={(e) => setFormData({ ...formData, coverLetter: e.target.value })}
+                    placeholder="Give us a extra details about yourself, your skills, and your experience..."
+                    value={formData.extraUserDetails}
+                    onChange={(e) => setFormData({ ...formData, extraUserDetails: e.target.value })}
                     className="h-48"
                   />
                 )}
@@ -150,12 +170,10 @@ const Index = () => {
                 <h3 className="text-sm font-medium text-gray-500">Resume</h3>
                 <p className="text-navy">{formData.resume?.name}</p>
               </div>
-              {formData.generateCoverLetter && (
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-gray-500">Cover Letter</h3>
-                  <p className="text-navy whitespace-pre-wrap">{formData.coverLetter || "No cover letter generated yet"}</p>
-                </div>
-              )}
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-gray-500">Cover Letter</h3>
+                <p className="text-navy whitespace-pre-wrap">{formData.extraUserDetails || "No cover letter generated yet"}</p>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-gray-500">Full Name</h3>

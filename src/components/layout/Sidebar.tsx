@@ -1,4 +1,4 @@
-import { Home, FileText, Users, Settings } from "lucide-react"
+import { Home, FileText, Users, Settings } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -8,14 +8,15 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 
 const menuItems = [
   { title: "Dashboard", icon: Home, url: "/" },
   { title: "Applications", icon: FileText, url: "/applications" },
   { title: "Profile", icon: Users, url: "/profile" },
   { title: "Settings", icon: Settings, url: "/settings" },
-]
+];
 
 export const AppSidebar = () => {
   return (
@@ -28,12 +29,14 @@ export const AppSidebar = () => {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a 
-                      href={item.url} 
-                      className="flex items-center gap-2 w-full transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group"
+                    <a
+                      href={item.url}
+                      className={cn(
+                        "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                      )}
                     >
-                      <item.icon className="h-4 w-4 transition-transform group-hover:scale-110" />
-                      <span className="transition-colors group-hover:text-navy">{item.title}</span>
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -43,5 +46,5 @@ export const AppSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
-}
+  );
+};

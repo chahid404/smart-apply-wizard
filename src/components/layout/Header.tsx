@@ -1,11 +1,11 @@
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Coins, Layout, PlusCircle, SignOut, User } from "@phosphor-icons/react";
 
 export const Header = () => {
   return (
-    <header className="h-16 border-b bg-white/50 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 h-16 border-b bg-white/50 backdrop-blur-sm">
       <div className="flex h-full items-center justify-between px-4 gap-4">
         <div className="flex items-center gap-4">
           <SidebarTrigger />
