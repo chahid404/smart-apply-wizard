@@ -5,13 +5,16 @@ import { Upload, File, X, ScanSearch, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
+import { generateMockResumeData } from "@/utils/mockResumeData";
+import { ResumeData } from "@/types/resume";
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
+  onResumeDataExtracted: (data: ResumeData) => void;
   selectedFile: File | null;
 }
 
-export const FileUpload = ({ onFileSelect, selectedFile }: FileUploadProps) => {
+export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }: FileUploadProps) => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [tempFile, setTempFile] = useState<File | null>(null);
   const [isScanning, setIsScanning] = useState(false);
@@ -41,6 +44,10 @@ export const FileUpload = ({ onFileSelect, selectedFile }: FileUploadProps) => {
           clearInterval(interval);
           setTimeout(() => {
             setIsScanning(false);
+            // Generate and save mock data
+            const mockData = generateMockResumeData();
+            localStorage.setItem('resumeData', JSON.stringify(mockData));
+            onResumeDataExtracted(mockData);
           }, 500);
         }
       }, 50);

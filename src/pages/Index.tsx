@@ -11,7 +11,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { FileUpload } from "@/components/wizard/FileUpload";
 import { WizardLayout } from "@/components/wizard/WizardLayout";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ResumeForm } from "@/components/wizard/ResumeForm";
+import { ResumeData } from "@/types/resume";
 
 const STEPS = ["Job URL", "Resume & Cover Letter", "Personal Info", "Review"];
 
@@ -22,11 +24,17 @@ const Index = () => {
     resume: null as File | null,
     withExtraUserDetails: true,
     extraUserDetails: "",
-    name: "",
-    email: "",
-    phone: "",
   });
+  const [resumeData, setResumeData] = useState<ResumeData | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Load resume data from localStorage if available
+    const savedResumeData = localStorage.getItem('resumeData');
+    if (savedResumeData) {
+      setResumeData(JSON.parse(savedResumeData));
+    }
+  }, []);
 
   const isValidUrl = (url: string) => {
     const urlPattern = new RegExp(
@@ -84,6 +92,11 @@ const Index = () => {
     });
   };
 
+  const handleResumeDataExtracted = (data: ResumeData) => {
+    setResumeData(data);
+    localStorage.setItem('resumeData', JSON.stringify(data));
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -116,7 +129,11 @@ const Index = () => {
             <div className="space-y-8">
               <div className="space-y-2 py-4">
                 <Label>Resume</Label>
-                <FileUpload selectedFile={formData.resume} onFileSelect={(file) => setFormData({ ...formData, resume: file })} />
+                <FileUpload 
+                  selectedFile={formData.resume} 
+                  onFileSelect={(file) => setFormData({ ...formData, resume: file })}
+                  onResumeDataExtracted={handleResumeDataExtracted}
+                />
               </div>
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
@@ -142,20 +159,19 @@ const Index = () => {
       case 3:
         return (
           <WizardLayout title="Personal Information" currentStep={currentStep} totalSteps={STEPS.length}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2 py-4">
-                <Label htmlFor="name">Full Name *</Label>
-                <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+            {resumeData ? (
+              <ResumeForm 
+                resumeData={resumeData} 
+                onChange={(data) => {
+                  setResumeData(data);
+                  localStorage.setItem('resumeData', JSON.stringify(data));
+                }}
+              />
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                No resume data available. Please upload a resume in the previous step.
               </div>
-              <div className="space-y-2 py-4">
-                <Label htmlFor="email">Email Address *</Label>
-                <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-              </div>
-              <div className="space-y-2 py-4">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
-              </div>
-            </div>
+            )}
           </WizardLayout>
         );
       case 4:
@@ -177,15 +193,15 @@ const Index = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-gray-500">Full Name</h3>
-                  <p className="text-navy">{formData.name}</p>
+                  <p className="text-navy">{resumeData?.personalInfo.fullName}</p>
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-gray-500">Email</h3>
-                  <p className="text-navy">{formData.email}</p>
+                  <p className="text-navy">{resumeData?.personalInfo.email}</p>
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-gray-500">Phone</h3>
-                  <p className="text-navy">{formData.phone || "Not provided"}</p>
+                  <p className="text-navy">{resumeData?.personalInfo.phone || "Not provided"}</p>
                 </div>
               </div>
             </div>
