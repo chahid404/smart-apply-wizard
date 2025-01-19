@@ -28,9 +28,12 @@ export const AppSidebar = () => {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
+                    <a 
+                      href={item.url} 
+                      className="flex items-center gap-2 w-full transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group"
+                    >
+                      <item.icon className="h-4 w-4 transition-transform group-hover:scale-110" />
+                      <span className="transition-colors group-hover:text-navy">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
