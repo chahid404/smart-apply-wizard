@@ -23,22 +23,22 @@ export const Header = () => {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <User className="h-4 w-4 mr-2" />
-                User Name
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem className="transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group cursor-pointer">
+                <User className="h-4 w-4 mr-2 transition-transform group-hover:scale-110" />
+                <span className="transition-colors group-hover:text-navy">User Name</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Add Tokens
+              <DropdownMenuItem className="transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group cursor-pointer">
+                <PlusCircle className="h-4 w-4 mr-2 transition-transform group-hover:scale-110" />
+                <span className="transition-colors group-hover:text-navy">Add Tokens</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Layout className="h-4 w-4 mr-2" />
-                Dashboard
+              <DropdownMenuItem className="transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group cursor-pointer">
+                <Layout className="h-4 w-4 mr-2 transition-transform group-hover:scale-110" />
+                <span className="transition-colors group-hover:text-navy">Dashboard</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <SignOut className="h-4 w-4 mr-2" />
-                Logout
+              <DropdownMenuItem className="transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group cursor-pointer">
+                <SignOut className="h-4 w-4 mr-2 transition-transform group-hover:scale-110" />
+                <span className="transition-colors group-hover:text-navy">Logout</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
