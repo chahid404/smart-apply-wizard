@@ -1,12 +1,14 @@
-import { useState, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import { cn } from "@/lib/utils";
-import { Upload, File, X, ScanSearch, Check } from "lucide-react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { motion } from "framer-motion";
-import { generateMockResumeData } from "@/utils/mockResumeData";
+import { cn } from "@/lib/utils";
 import { ResumeData } from "@/types/resume";
+import { generateMockResumeData } from "@/utils/mockResumeData";
+import { motion } from "framer-motion";
+import { Check, File, ScanSearch, Upload, X } from "lucide-react";
+import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import StatusAlert from "../ui/StatusAlert";
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -19,16 +21,14 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
   const [tempFile, setTempFile] = useState<File | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
+  const [scanSuccess, setScanSuccess] = useState(null);
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (acceptedFiles.length > 0) {
-        setTempFile(acceptedFiles[0]);
-        setShowConfirmDialog(true);
-      }
-    },
-    []
-  );
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setTempFile(acceptedFiles[0]);
+      setShowConfirmDialog(true);
+    }
+  }, []);
 
   const handleConfirm = () => {
     setShowConfirmDialog(false);
@@ -46,8 +46,9 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
             setIsScanning(false);
             // Generate and save mock data
             const mockData = generateMockResumeData();
-            localStorage.setItem('resumeData', JSON.stringify(mockData));
+            localStorage.setItem("resumeData", JSON.stringify(mockData));
             onResumeDataExtracted(mockData);
+            setScanSuccess(true);
           }, 500);
         }
       }, 50);
@@ -94,24 +95,22 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
                 <p className="text-xs text-gray-400">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
             </div>
-            <button onClick={() => onFileSelect(null as any)} className="p-1 hover:bg-gray-100 rounded-full transition-colors duration-300">
+            <button
+              onClick={() => {
+                onFileSelect(null as any);
+                setScanSuccess(null);
+              }}
+              className="p-1 hover:bg-gray-100 rounded-full transition-colors duration-300"
+            >
               <X className="w-4 h-4 text-gray-400" />
             </button>
           </div>
         </div>
       )}
-
       {isScanning && (
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-4 p-6 border rounded-lg bg-white space-y-4"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-6 border rounded-lg bg-white space-y-4">
           <div className="flex items-center space-x-3">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            >
+            <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }}>
               <ScanSearch className="w-6 h-6 text-navy" />
             </motion.div>
             <span className="text-sm font-medium text-gray-700">Scanning your resume...</span>
@@ -124,19 +123,15 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
               transition={{ duration: 0.1 }}
             />
           </div>
-          <div className="text-xs text-gray-500 text-center">
-            Analyzing skills, experience, and qualifications...
-          </div>
+          <div className="text-xs text-gray-500 text-center">Analyzing skills, experience, and qualifications...</div>
         </motion.div>
       )}
-
+      <StatusAlert status={scanSuccess} successMessage="Resume scanned successfully!" errorMessage="Resume scan failed. Please try again." />
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm Resume Upload</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to upload {tempFile?.name}?
-            </DialogDescription>
+            <DialogDescription>Are you sure you want to upload {tempFile?.name}?</DialogDescription>
           </DialogHeader>
           <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
             <File className="w-6 h-6 text-navy" />
@@ -146,7 +141,9 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={handleCancel}>Cancel</Button>
+            <Button variant="outline" onClick={handleCancel}>
+              Cancel
+            </Button>
             <Button onClick={handleConfirm} className="bg-navy hover:bg-navy-light">
               <Check className="w-4 h-4 mr-2" />
               Confirm
