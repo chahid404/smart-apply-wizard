@@ -64,7 +64,7 @@ const Index = () => {
       });
       return;
     }
-    if (currentStep === 3 && (!formData.name || !formData.email)) {
+    if (currentStep === 3 && (!resumeData?.personalInfo.fullName || !resumeData?.personalInfo.email)) {
       toast({
         title: "Please fill in all required fields",
         variant: "destructive",
