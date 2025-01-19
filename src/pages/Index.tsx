@@ -1,18 +1,17 @@
-import { useState } from "react";
-import { WizardProgress } from "@/components/wizard/WizardProgress";
-import { WizardLayout } from "@/components/wizard/WizardLayout";
-import { FileUpload } from "@/components/wizard/FileUpload";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { AnimatePresence } from "framer-motion";
-import { useToast } from "@/components/ui/use-toast";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
+import { AppSidebar } from "@/components/layout/Sidebar";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
+import { FileUpload } from "@/components/wizard/FileUpload";
+import { WizardLayout } from "@/components/wizard/WizardLayout";
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 const STEPS = ["Job URL", "Resume & Cover Letter", "Personal Info", "Review"];
 
