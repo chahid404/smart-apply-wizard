@@ -14,7 +14,7 @@ export const AppSidebar = () => {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-lg font-semibold text-navy/80">Menu</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-lg font-semibold text-navy">Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
@@ -26,7 +26,7 @@ export const AppSidebar = () => {
                       "transition-all duration-300 ease-out",
                       "rounded-xl border border-transparent",
                       "hover:border-mint/20 hover:bg-gradient-to-r hover:from-white hover:to-mint/5",
-                      "text-navy/70 font-medium",
+                      "text-navy font-medium",
                       "group relative overflow-hidden"
                     )}
                   >
