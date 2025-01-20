@@ -89,12 +89,12 @@ const Index = () => {
         <AppSidebar />
         <div className="flex-1">
           <Header />
-          <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-4 sm:p-6">
-            <div className="max-w-4xl mx-auto pt-6 sm:pt-12 pb-12 sm:pb-24">
-              <h1 className="text-3xl sm:text-4xl font-bold text-navy text-center mb-8 sm:mb-12 px-4">
+          <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-3 sm:p-6">
+            <div className="max-w-4xl mx-auto pt-4 sm:pt-12 pb-8 sm:pb-24">
+              <h1 className="text-2xl sm:text-4xl font-bold text-navy text-center mb-6 sm:mb-12 px-2 sm:px-4">
                 AI Job Application
               </h1>
-              <Card className="p-6 sm:p-8">
+              <Card className="p-4 sm:p-8 mx-2 sm:mx-0">
                 <AnimatePresence mode="wait">
                   <WizardSteps
                     currentStep={currentStep}
