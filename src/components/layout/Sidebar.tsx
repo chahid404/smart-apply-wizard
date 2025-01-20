@@ -14,17 +14,24 @@ export const AppSidebar = () => {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-lg">Menu</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-lg font-semibold text-navy">Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <a
                     href={item.url}
-                    className={cn("flex items-center gap-2 p-3 rounded-md hover:bg-gray-100 transition-all duration-200 text-gray-700 font-medium")}
+                    className={cn(
+                      "flex items-center gap-3 p-3 rounded-lg",
+                      "transition-all duration-200 ease-in-out",
+                      "hover:bg-mint/10 hover:translate-x-1",
+                      "text-navy font-medium",
+                      "group relative"
+                    )}
                   >
-                    <item.icon className="h-4 w-4 mr-2" />
-                    <span>{item.title}</span>
+                    <span className="absolute left-0 w-1 h-0 bg-teal rounded-r transition-all duration-200 group-hover:h-full" />
+                    <item.icon className="h-5 w-5 text-teal transition-colors duration-200 group-hover:text-teal-light" />
+                    <span className="transition-colors duration-200 group-hover:text-navy-light">{item.title}</span>
                   </a>
                 </SidebarMenuItem>
               ))}
