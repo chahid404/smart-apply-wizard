@@ -14,7 +14,7 @@ export const AppSidebar = () => {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-lg font-semibold text-navy">Menu</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-lg font-semibold text-navy/80">Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
@@ -22,16 +22,19 @@ export const AppSidebar = () => {
                   <a
                     href={item.url}
                     className={cn(
-                      "flex items-center gap-3 p-3 rounded-lg",
-                      "transition-all duration-200 ease-in-out",
-                      "hover:bg-mint/10 hover:translate-x-1",
-                      "text-navy font-medium",
-                      "group relative"
+                      "flex items-center gap-3 p-3",
+                      "transition-all duration-300 ease-out",
+                      "rounded-xl border border-transparent",
+                      "hover:border-mint/20 hover:bg-gradient-to-r hover:from-white hover:to-mint/5",
+                      "text-navy/70 font-medium",
+                      "group relative overflow-hidden"
                     )}
                   >
-                    <span className="absolute left-0 w-1 h-0 bg-teal rounded-r transition-all duration-200 group-hover:h-full" />
-                    <item.icon className="h-5 w-5 text-teal transition-colors duration-200 group-hover:text-teal-light" />
-                    <span className="transition-colors duration-200 group-hover:text-navy-light">{item.title}</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-teal/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    <div className="relative flex items-center gap-3">
+                      <item.icon className="h-5 w-5 text-teal transition-transform duration-300 ease-out group-hover:scale-110" />
+                      <span className="transition-colors duration-300 group-hover:text-navy">{item.title}</span>
+                    </div>
                   </a>
                 </SidebarMenuItem>
               ))}
