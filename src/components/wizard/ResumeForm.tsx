@@ -41,7 +41,7 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="location">Location</Label>
-            <Input id="location" value={resumeData.personalInfo.location} onChange={(e) => updatePersonalInfo("location", e.target.value)} />
+            <Input id="location" value={resumeData.personalInfo.address} onChange={(e) => updatePersonalInfo("address", e.target.value)} />
           </div>
           <div className="space-y-2 md:col-span-2">
             <Label htmlFor="linkedin">LinkedIn Profile</Label>
