@@ -56,6 +56,42 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
     });
   };
 
+  const addExperience = () => {
+    onChange({
+      ...resumeData,
+      experience: [
+        ...resumeData.experience,
+        {
+          company: "",
+          position: "",
+          startDate: "",
+          endDate: "",
+          description: [""],
+          techStack: [],
+        },
+      ],
+    });
+  };
+
+  const updateExperience = (index: number, field: keyof ResumeData["experience"][0], value: string | string[]) => {
+    const newExperience = [...resumeData.experience];
+    newExperience[index] = {
+      ...newExperience[index],
+      [field]: value,
+    };
+    onChange({
+      ...resumeData,
+      experience: newExperience,
+    });
+  };
+
+  const removeExperience = (index: number) => {
+    onChange({
+      ...resumeData,
+      experience: resumeData.experience.filter((_, i) => i !== index),
+    });
+  };
+
   return (
     <div className="space-y-6 mt-8">
       <Card>
@@ -83,7 +119,6 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
             <Label htmlFor="linkedin">LinkedIn Profile</Label>
             <Input id="linkedin" value={resumeData.personalInfo.linkedIn} onChange={(e) => updatePersonalInfo("linkedIn", e.target.value)} />
           </div>
-          {/* TODO : add more fields like github, portfolio, etc. */}
         </CardContent>
       </Card>
 
@@ -106,10 +141,10 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-2 top-2"
+                className="absolute right-2 top-2 group"
                 onClick={() => removeEducation(index)}
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-4 w-4 group-hover:text-red-500 transition-colors" />
               </Button>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
@@ -156,6 +191,89 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
           >
             <Plus className="h-4 w-4 mr-2" />
             Add Education
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Experience</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {resumeData.experience.map((exp, index) => (
+            <div key={index} className="space-y-4 p-4 border rounded-lg relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-2 group"
+                onClick={() => removeExperience(index)}
+              >
+                <Trash2 className="h-4 w-4 group-hover:text-red-500 transition-colors" />
+              </Button>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor={`company-${index}`}>Company</Label>
+                  <Input
+                    id={`company-${index}`}
+                    value={exp.company}
+                    onChange={(e) => updateExperience(index, "company", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor={`position-${index}`}>Position</Label>
+                  <Input
+                    id={`position-${index}`}
+                    value={exp.position}
+                    onChange={(e) => updateExperience(index, "position", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor={`startDate-${index}`}>Start Date</Label>
+                  <Input
+                    id={`startDate-${index}`}
+                    type="month"
+                    value={exp.startDate}
+                    onChange={(e) => updateExperience(index, "startDate", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor={`endDate-${index}`}>End Date</Label>
+                  <Input
+                    id={`endDate-${index}`}
+                    type="month"
+                    value={exp.endDate}
+                    onChange={(e) => updateExperience(index, "endDate", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor={`description-${index}`}>Description</Label>
+                  <Textarea
+                    id={`description-${index}`}
+                    value={exp.description.join("\n")}
+                    onChange={(e) => updateExperience(index, "description", e.target.value.split("\n"))}
+                    className="min-h-[100px]"
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor={`techStack-${index}`}>Tech Stack</Label>
+                  <Input
+                    id={`techStack-${index}`}
+                    value={exp.techStack.join(", ")}
+                    onChange={(e) => updateExperience(index, "techStack", e.target.value.split(", ").filter(Boolean))}
+                    placeholder="Enter technologies separated by commas"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={addExperience}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Experience
           </Button>
         </CardContent>
       </Card>
