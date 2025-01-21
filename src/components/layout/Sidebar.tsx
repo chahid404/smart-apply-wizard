@@ -1,6 +1,7 @@
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { FileText, Home, Settings, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const menuItems = [
   { title: "Dashboard", icon: Home, url: "/" },
@@ -10,6 +11,8 @@ const menuItems = [
 ];
 
 export const AppSidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -20,7 +23,7 @@ export const AppSidebar = () => {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <a
-                    href={item.url}
+                    onClick={() => navigate(`${item.url}`)}
                     className={cn(
                       "flex items-center gap-3 p-3",
                       "transition-all duration-300 ease-out",

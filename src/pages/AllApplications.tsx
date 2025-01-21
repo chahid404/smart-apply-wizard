@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { useToast } from "@/components/ui/use-toast";
-import { Eye, Filter, PlusCircle, Search, Trash2, Edit2 } from "lucide-react";
+import { Edit2, Eye, Filter, PlusCircle, Search, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Mock data for demonstration
@@ -65,10 +65,7 @@ const AllApplications = () => {
                   <h1 className="text-2xl sm:text-3xl font-bold text-navy">All Applications</h1>
                   <p className="text-gray-600 mt-1">Track and manage your job applications</p>
                 </div>
-                <Button
-                  onClick={() => navigate("/")}
-                  className="bg-navy hover:bg-navy-light transition-colors"
-                >
+                <Button onClick={() => navigate("/")} className="bg-navy hover:bg-navy-light transition-colors">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   New Application
                 </Button>
@@ -78,12 +75,7 @@ const AllApplications = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
-                  <Input
-                    placeholder="Search applications..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
+                  <Input placeholder="Search applications..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10" />
                 </div>
                 <Button variant="outline" className="gap-2">
                   <Filter className="h-4 w-4" />
@@ -106,9 +98,7 @@ const AllApplications = () => {
                             {application.status.replace("_", " ")}
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-500">
-                          Applied: {new Date(application.dateApplied).toLocaleDateString()}
-                        </div>
+                        <div className="text-sm text-gray-500">Applied: {new Date(application.dateApplied).toLocaleDateString()}</div>
                         <div className="flex justify-between items-center">
                           <div className="text-sm text-gray-500">{application.platform}</div>
                           <div className="flex gap-2">
@@ -120,20 +110,11 @@ const AllApplications = () => {
                             >
                               <Eye className="h-4 w-4" />
                             </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="hover:text-navy"
-                            >
+                            <Button variant="ghost" size="icon" className="hover:text-navy">
                               <Edit2 className="h-4 w-4" />
                             </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleDelete(application.id)}
-                              className="group"
-                            >
-                              <Trash2 className="h-4 w-4 group-hover:text-red-500 transition-colors" />
+                            <Button variant="ghost" size="icon" onClick={() => handleDelete(application.id)} className="hover:bg-red-300 ">
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
                         </div>
@@ -143,10 +124,7 @@ const AllApplications = () => {
                 ) : (
                   <div className="col-span-full flex flex-col items-center justify-center p-8 text-center">
                     <div className="text-gray-400 mb-4">No applications yet</div>
-                    <Button
-                      onClick={() => navigate("/")}
-                      className="bg-navy hover:bg-navy-light transition-colors"
-                    >
+                    <Button onClick={() => navigate("/")} className="bg-navy hover:bg-navy-light transition-colors">
                       <PlusCircle className="mr-2 h-4 w-4" />
                       Start New Application
                     </Button>
