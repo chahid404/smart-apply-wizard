@@ -4,7 +4,7 @@ import { FileText, Home, Settings, Users } from "lucide-react";
 
 const menuItems = [
   { title: "Dashboard", icon: Home, url: "/" },
-  { title: "Applications", icon: FileText, url: "/application/1" },
+  { title: "Applications", icon: FileText, url: "/applications" },
   { title: "Profile", icon: Users, url: "/profile" },
   { title: "Settings", icon: Settings, url: "/settings" },
 ];
