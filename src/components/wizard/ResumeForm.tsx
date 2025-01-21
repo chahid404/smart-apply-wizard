@@ -10,7 +10,7 @@ interface ResumeFormProps {
 }
 
 export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
-  const updatePersonalInfo = (field: keyof ResumeData['personalInfo'], value: string) => {
+  const updatePersonalInfo = (field: keyof ResumeData["personalInfo"], value: string) => {
     onChange({
       ...resumeData,
       personalInfo: {
@@ -21,7 +21,7 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mt-8">
       <Card>
         <CardHeader>
           <CardTitle>Personal Information</CardTitle>
@@ -29,45 +29,25 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="fullName">Full Name</Label>
-            <Input
-              id="fullName"
-              value={resumeData.personalInfo.fullName}
-              onChange={(e) => updatePersonalInfo('fullName', e.target.value)}
-            />
+            <Input id="fullName" value={resumeData.personalInfo.fullName} onChange={(e) => updatePersonalInfo("fullName", e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={resumeData.personalInfo.email}
-              onChange={(e) => updatePersonalInfo('email', e.target.value)}
-            />
+            <Input id="email" type="email" value={resumeData.personalInfo.email} onChange={(e) => updatePersonalInfo("email", e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="phone">Phone</Label>
-            <Input
-              id="phone"
-              value={resumeData.personalInfo.phone}
-              onChange={(e) => updatePersonalInfo('phone', e.target.value)}
-            />
+            <Input id="phone" value={resumeData.personalInfo.phone} onChange={(e) => updatePersonalInfo("phone", e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="location">Location</Label>
-            <Input
-              id="location"
-              value={resumeData.personalInfo.location}
-              onChange={(e) => updatePersonalInfo('location', e.target.value)}
-            />
+            <Input id="location" value={resumeData.personalInfo.location} onChange={(e) => updatePersonalInfo("location", e.target.value)} />
           </div>
           <div className="space-y-2 md:col-span-2">
             <Label htmlFor="linkedin">LinkedIn Profile</Label>
-            <Input
-              id="linkedin"
-              value={resumeData.personalInfo.linkedIn}
-              onChange={(e) => updatePersonalInfo('linkedIn', e.target.value)}
-            />
+            <Input id="linkedin" value={resumeData.personalInfo.linkedIn} onChange={(e) => updatePersonalInfo("linkedIn", e.target.value)} />
           </div>
+          {/* TODO : add more fields like github, portfolio, etc. */}
         </CardContent>
       </Card>
 
@@ -76,14 +56,16 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
           <CardTitle>Professional Summary</CardTitle>
         </CardHeader>
         <CardContent>
-          <Textarea
-            value={resumeData.summary}
-            onChange={(e) => onChange({ ...resumeData, summary: e.target.value })}
-            className="min-h-[100px]"
-          />
+          <Textarea value={resumeData.summary} onChange={(e) => onChange({ ...resumeData, summary: e.target.value })} className="min-h-[100px]" />
         </CardContent>
       </Card>
-
+      {/* TODO : add education section */}
+      {/* TODO : add experience section */}
+      {/* TODO : add projects section */}
+      {/* TODO : add certifications section */}
+      {/* TODO : add languages section */}
+      {/* TODO : add sidebar / header to applications */}
+      {/* TODO : add page applications */}
       <Card>
         <CardHeader>
           <CardTitle>Skills</CardTitle>
@@ -91,10 +73,15 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
         <CardContent>
           <Textarea
             value={resumeData.skills.join(", ")}
-            onChange={(e) => onChange({ 
-              ...resumeData, 
-              skills: e.target.value.split(",").map(skill => skill.trim()).filter(Boolean)
-            })}
+            onChange={(e) =>
+              onChange({
+                ...resumeData,
+                skills: e.target.value
+                  .split(",")
+                  .map((skill) => skill.trim())
+                  .filter(Boolean),
+              })
+            }
             placeholder="Enter skills separated by commas"
             className="min-h-[100px]"
           />
