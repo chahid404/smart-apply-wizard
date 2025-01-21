@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Plus, Trash2 } from "lucide-react";
 
 interface ResumeFormProps {
   resumeData: ResumeData;
@@ -17,6 +19,40 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
         ...resumeData.personalInfo,
         [field]: value,
       },
+    });
+  };
+
+  const addEducation = () => {
+    onChange({
+      ...resumeData,
+      education: [
+        ...resumeData.education,
+        {
+          institution: "",
+          degree: "",
+          field: "",
+          graduationDate: "",
+        },
+      ],
+    });
+  };
+
+  const updateEducation = (index: number, field: keyof ResumeData["education"][0], value: string) => {
+    const newEducation = [...resumeData.education];
+    newEducation[index] = {
+      ...newEducation[index],
+      [field]: value,
+    };
+    onChange({
+      ...resumeData,
+      education: newEducation,
+    });
+  };
+
+  const removeEducation = (index: number) => {
+    onChange({
+      ...resumeData,
+      education: resumeData.education.filter((_, i) => i !== index),
     });
   };
 
@@ -59,13 +95,71 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
           <Textarea value={resumeData.summary} onChange={(e) => onChange({ ...resumeData, summary: e.target.value })} className="min-h-[100px]" />
         </CardContent>
       </Card>
-      {/* TODO : add education section */}
-      {/* TODO : add experience section */}
-      {/* TODO : add projects section */}
-      {/* TODO : add certifications section */}
-      {/* TODO : add languages section */}
-      {/* TODO : add sidebar / header to applications */}
-      {/* TODO : add page applications */}
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Education</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {resumeData.education.map((edu, index) => (
+            <div key={index} className="space-y-4 p-4 border rounded-lg relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-2"
+                onClick={() => removeEducation(index)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor={`institution-${index}`}>Institution</Label>
+                  <Input
+                    id={`institution-${index}`}
+                    value={edu.institution}
+                    onChange={(e) => updateEducation(index, "institution", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor={`degree-${index}`}>Degree</Label>
+                  <Input
+                    id={`degree-${index}`}
+                    value={edu.degree}
+                    onChange={(e) => updateEducation(index, "degree", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor={`field-${index}`}>Field of Study</Label>
+                  <Input
+                    id={`field-${index}`}
+                    value={edu.field}
+                    onChange={(e) => updateEducation(index, "field", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor={`graduation-${index}`}>Graduation Date</Label>
+                  <Input
+                    id={`graduation-${index}`}
+                    type="month"
+                    value={edu.graduationDate}
+                    onChange={(e) => updateEducation(index, "graduationDate", e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={addEducation}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Education
+          </Button>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle>Skills</CardTitle>
