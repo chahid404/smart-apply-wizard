@@ -1,9 +1,9 @@
-import { ResumeData } from "@/types/resume";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { ResumeData } from "@/types/resume";
 import { Plus, Trash2 } from "lucide-react";
 
 interface ResumeFormProps {
@@ -138,13 +138,8 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
         <CardContent className="space-y-6">
           {resumeData.education.map((edu, index) => (
             <div key={index} className="space-y-4 p-4 border rounded-lg relative">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-2 group"
-                onClick={() => removeEducation(index)}
-              >
-                <Trash2 className="h-4 w-4 group-hover:text-red-500 transition-colors" />
+              <Button variant="ghost" size="icon" className="absolute right-2 top-2 group hover:bg-red-300" onClick={() => removeEducation(index)}>
+                <Trash2 className="h-4 w-4" />
               </Button>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
@@ -157,19 +152,11 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor={`degree-${index}`}>Degree</Label>
-                  <Input
-                    id={`degree-${index}`}
-                    value={edu.degree}
-                    onChange={(e) => updateEducation(index, "degree", e.target.value)}
-                  />
+                  <Input id={`degree-${index}`} value={edu.degree} onChange={(e) => updateEducation(index, "degree", e.target.value)} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor={`field-${index}`}>Field of Study</Label>
-                  <Input
-                    id={`field-${index}`}
-                    value={edu.field}
-                    onChange={(e) => updateEducation(index, "field", e.target.value)}
-                  />
+                  <Input id={`field-${index}`} value={edu.field} onChange={(e) => updateEducation(index, "field", e.target.value)} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor={`graduation-${index}`}>Graduation Date</Label>
@@ -183,12 +170,7 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
               </div>
             </div>
           ))}
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={addEducation}
-          >
+          <Button type="button" variant="outline" className="w-full" onClick={addEducation}>
             <Plus className="h-4 w-4 mr-2" />
             Add Education
           </Button>
@@ -202,30 +184,17 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
         <CardContent className="space-y-6">
           {resumeData.experience.map((exp, index) => (
             <div key={index} className="space-y-4 p-4 border rounded-lg relative">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-2 group"
-                onClick={() => removeExperience(index)}
-              >
-                <Trash2 className="h-4 w-4 group-hover:text-red-500 transition-colors" />
+              <Button variant="ghost" size="icon" className="absolute right-2 top-2 group hover:bg-red-300" onClick={() => removeExperience(index)}>
+                <Trash2 className="h-4 w-4" />
               </Button>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor={`company-${index}`}>Company</Label>
-                  <Input
-                    id={`company-${index}`}
-                    value={exp.company}
-                    onChange={(e) => updateExperience(index, "company", e.target.value)}
-                  />
+                  <Input id={`company-${index}`} value={exp.company} onChange={(e) => updateExperience(index, "company", e.target.value)} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor={`position-${index}`}>Position</Label>
-                  <Input
-                    id={`position-${index}`}
-                    value={exp.position}
-                    onChange={(e) => updateExperience(index, "position", e.target.value)}
-                  />
+                  <Input id={`position-${index}`} value={exp.position} onChange={(e) => updateExperience(index, "position", e.target.value)} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor={`startDate-${index}`}>Start Date</Label>
@@ -266,12 +235,7 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
               </div>
             </div>
           ))}
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={addExperience}
-          >
+          <Button type="button" variant="outline" className="w-full" onClick={addExperience}>
             <Plus className="h-4 w-4 mr-2" />
             Add Experience
           </Button>
