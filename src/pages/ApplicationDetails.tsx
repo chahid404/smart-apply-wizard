@@ -10,6 +10,13 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const ApplicationDetails = () => {
   const navigate = useNavigate();
@@ -21,6 +28,11 @@ const ApplicationDetails = () => {
   const timeElapsed = "10 minutes";
   const confidenceScore = 95;
   const successRate = 90;
+  const screenshots = [
+    "/placeholder.svg",
+    "/placeholder.svg",
+    "/placeholder.svg"
+  ];
 
   const steps = [
     { id: 1, status: "completed", title: "AI analyzing form fields", time: "2 minutes ago" },
@@ -43,7 +55,6 @@ const ApplicationDetails = () => {
           <Header />
           <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-3 sm:p-6">
             <div className="max-w-4xl mx-auto space-y-6">
-              {/* Header Section */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-bold text-navy">Application Status & Progress</h1>
@@ -116,6 +127,32 @@ const ApplicationDetails = () => {
                       <p className="text-navy">Full-time</p>
                     </div>
                   </div>
+                </CardContent>
+              </Card>
+
+              {/* Screenshots Section */}
+              <Card className="animate-fade-in">
+                <CardHeader>
+                  <CardTitle>Application Screenshots</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Carousel className="w-full max-w-xl mx-auto">
+                    <CarouselContent>
+                      {screenshots.map((screenshot, index) => (
+                        <CarouselItem key={index}>
+                          <div className="p-1">
+                            <img
+                              src={screenshot}
+                              alt={`Application Screenshot ${index + 1}`}
+                              className="w-full rounded-lg shadow-md"
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
                 </CardContent>
               </Card>
 
