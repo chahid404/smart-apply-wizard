@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowLeft, Clock, Download, ExternalLink, FileText, PauseCircle, PlayCircle, RefreshCw, Trash2, XCircle } from "lucide-react";
+import { ArrowLeft, Clock, Download, ExternalLink, FileText, PauseCircle, PlayCircle, RefreshCw, Trash2 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -28,10 +27,34 @@ const ApplicationDetails = () => {
   const timeElapsed = "10 minutes";
   const confidenceScore = 95;
   const successRate = 90;
+  
+  // Updated screenshots array with descriptive stages of the AI application process
   const screenshots = [
-    "/placeholder.svg",
-    "/placeholder.svg",
-    "/placeholder.svg"
+    {
+      url: "/placeholder.svg",
+      stage: "Initial Form Analysis",
+      description: "AI analyzing job application form structure"
+    },
+    {
+      url: "/placeholder.svg",
+      stage: "Resume Parsing",
+      description: "Extracting relevant information from resume"
+    },
+    {
+      url: "/placeholder.svg",
+      stage: "Cover Letter Generation",
+      description: "AI generating personalized cover letter"
+    },
+    {
+      url: "/placeholder.svg",
+      stage: "Form Field Population",
+      description: "Automatically filling application fields"
+    },
+    {
+      url: "/placeholder.svg",
+      stage: "Final Review",
+      description: "Pre-submission verification of all fields"
+    }
   ];
 
   const steps = [
@@ -133,19 +156,23 @@ const ApplicationDetails = () => {
               {/* Screenshots Section */}
               <Card className="animate-fade-in">
                 <CardHeader>
-                  <CardTitle>Application Screenshots</CardTitle>
+                  <CardTitle>Application Process Screenshots</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Carousel className="w-full max-w-xl mx-auto">
                     <CarouselContent>
                       {screenshots.map((screenshot, index) => (
                         <CarouselItem key={index}>
-                          <div className="p-1">
+                          <div className="p-1 space-y-2">
                             <img
-                              src={screenshot}
-                              alt={`Application Screenshot ${index + 1}`}
+                              src={screenshot.url}
+                              alt={`${screenshot.stage} - ${screenshot.description}`}
                               className="w-full rounded-lg shadow-md"
                             />
+                            <div className="text-center space-y-1">
+                              <h3 className="font-medium text-navy">{screenshot.stage}</h3>
+                              <p className="text-sm text-gray-600">{screenshot.description}</p>
+                            </div>
                           </div>
                         </CarouselItem>
                       ))}
