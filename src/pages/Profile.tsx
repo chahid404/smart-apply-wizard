@@ -44,7 +44,7 @@ const Profile = () => {
               <Card className="relative overflow-hidden">
                 <div className="h-32 bg-gradient-to-r from-navy to-teal" />
                 <div className="relative px-6 pb-6">
-                  <div className="flex flex-col sm:flex-row items-center gap-4 -mt-12">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 -mt-12">
                     <div className="relative">
                       <Avatar className="h-24 w-24 border-4 border-white">
                         <AvatarImage src="https://github.com/shadcn.png" />
@@ -62,13 +62,13 @@ const Profile = () => {
                         <Camera className="h-4 w-4" />
                       </Button>
                     </div>
-                    <div className="text-center sm:text-left flex-1">
+                    <div className="flex-1">
                       <h1 className="text-2xl font-bold text-navy">{formData.fullName}</h1>
-                      <p className="text-gray-600">{formData.bio}</p>
+                      <p className="text-gray-600 mt-1">{formData.bio}</p>
                     </div>
                     <Button
                       variant="outline"
-                      className="shrink-0"
+                      className="shrink-0 mt-4 sm:mt-0"
                       onClick={() => setIsEditing(!isEditing)}
                     >
                       <Edit2 className="mr-2 h-4 w-4" />
