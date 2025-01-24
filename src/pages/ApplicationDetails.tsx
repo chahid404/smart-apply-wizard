@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Clock, Download, ExternalLink, FileText, PauseCircle, PlayCircle, RefreshCw, Trash2 } from "lucide-react";
+import { Header } from "@/components/layout/Header";
+import { AppSidebar } from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { Header } from "@/components/layout/Header";
-import { AppSidebar } from "@/components/layout/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const ApplicationDetails = () => {
   const navigate = useNavigate();
