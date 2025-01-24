@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import ApplicationDetails from "./pages/ApplicationDetails";
 import AllApplications from "./pages/AllApplications";
 import Profile from "./pages/Profile";
+import Tokens from "./pages/Tokens";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/application/:id" element={<ApplicationDetails />} />
           <Route path="/applications" element={<AllApplications />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/tokens" element={<Tokens />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

@@ -1,12 +1,13 @@
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { FileText, Home, Settings, Users } from "lucide-react";
+import { FileText, Home, Settings, Users, Coins } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const menuItems = [
   { title: "Dashboard", icon: Home, url: "/" },
   { title: "Applications", icon: FileText, url: "/applications" },
   { title: "Profile", icon: Users, url: "/profile" },
+  { title: "Tokens", icon: Coins, url: "/tokens" },
   { title: "Settings", icon: Settings, url: "/settings" },
 ];
 
