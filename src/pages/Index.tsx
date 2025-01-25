@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { AnimatePresence } from "framer-motion";
-import { ResumeData } from "@/types/resume";
-import { WizardSteps } from "@/components/wizard/WizardSteps";
 import { WizardNavigation } from "@/components/wizard/WizardNavigation";
+import { WizardSteps } from "@/components/wizard/WizardSteps";
+import { ResumeData } from "@/types/resume";
+import { AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -18,7 +18,7 @@ const Index = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const savedResumeData = localStorage.getItem('resumeData');
+    const savedResumeData = localStorage.getItem("resumeData");
     if (savedResumeData) {
       setResumeData(JSON.parse(savedResumeData));
     }
@@ -83,9 +83,7 @@ const Index = () => {
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-3 sm:p-6">
       <div className="max-w-4xl mx-auto pt-4 sm:pt-12 pb-8 sm:pb-24">
-        <h1 className="text-2xl sm:text-4xl font-bold text-navy text-center mb-6 sm:mb-12 px-2 sm:px-4">
-          AI Job Application
-        </h1>
+        <h1 className="text-2xl sm:text-4xl font-bold text-navy text-center mb-6 sm:mb-12 px-2 sm:px-4">AI Job Application</h1>
         <Card className="p-4 sm:p-8 mx-2 sm:mx-0">
           <AnimatePresence mode="wait">
             <WizardSteps
@@ -96,15 +94,11 @@ const Index = () => {
               onResumeDataChange={setResumeData}
               onResumeDataExtracted={(data) => {
                 setResumeData(data);
-                localStorage.setItem('resumeData', JSON.stringify(data));
+                localStorage.setItem("resumeData", JSON.stringify(data));
               }}
             />
           </AnimatePresence>
-          <WizardNavigation
-            currentStep={currentStep}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
+          <WizardNavigation currentStep={currentStep} onNext={handleNext} onBack={handleBack} />
         </Card>
       </div>
     </div>
