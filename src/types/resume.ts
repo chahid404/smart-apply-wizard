@@ -52,3 +52,20 @@ interface Project {
   technologies: string[];
   url?: string;
 }
+
+export interface AdditionalCandidateInfo {
+  visaStatus: {
+    europe: boolean;
+    usa: boolean;
+    other?: string;
+  };
+  noticePeriod: string;
+  salaryExpectation: string;
+  gender: "male" | "female" | "other" | "prefer_not_to_say";
+  workPreference: "remote" | "hybrid" | "onsite";
+  availableToTravel: boolean;
+  willingToRelocate: boolean;
+  preferredLocations?: string[];
+  languages: string[];
+  currentEmploymentStatus: "employed" | "unemployed" | "freelancer" | "student";
+}

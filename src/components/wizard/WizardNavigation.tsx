@@ -15,7 +15,7 @@ export const WizardNavigation = ({ currentStep, onNext, onBack }: WizardNavigati
         </Button>
       )}
       <Button onClick={onNext} className="w-24 sm:w-32 bg-navy hover:bg-navy-light text-white">
-        {currentStep === 4 ? "Submit" : "Next"}
+        {currentStep === 5 ? "Submit" : "Next"}
       </Button>
     </div>
   );
