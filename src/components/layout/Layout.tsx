@@ -10,7 +10,7 @@ export const Layout = () => {
         <AppSidebar />
         <div className="flex-1">
           <Header />
-          <main>
+          <main className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-sand via-mint-light/10 to-teal-light/20 p-3 sm:p-6">
             <Outlet />
           </main>
         </div>
