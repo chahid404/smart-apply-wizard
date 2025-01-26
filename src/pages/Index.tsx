@@ -11,6 +11,7 @@ const Index = () => {
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
+    additionalInfo: "",
   });
   const [resumeData, setResumeData] = useState<ResumeData | null>(null);
   const { toast } = useToast();
