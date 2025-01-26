@@ -57,7 +57,7 @@ const Profile = () => {
             </div>
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-navy">{formData.fullName}</h1>
-              <p className="text-gray-600 mt-1">{formData.bio}</p>
+              <p className="text-gray-600 mt-4">{formData.bio}</p>
             </div>
             <Button variant="outline" className="shrink-0 mt-4 sm:mt-0" onClick={() => setIsEditing(!isEditing)}>
               <Edit2 className="mr-2 h-4 w-4" />
