@@ -24,6 +24,7 @@ const Index = () => {
       availableToTravel: false,
       willingToRelocate: false,
       currentEmploymentStatus: "employed" as const,
+      languages: [] // Added the missing languages property as an empty array
     },
   });
   const [resumeData, setResumeData] = useState<ResumeData | null>(null);
