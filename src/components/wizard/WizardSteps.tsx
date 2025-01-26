@@ -1,10 +1,8 @@
-import { WizardLayout } from "@/components/wizard/WizardLayout";
-import { FileUpload } from "@/components/wizard/FileUpload";
-import { ResumeForm } from "@/components/wizard/ResumeForm";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
+import { FileUpload } from "@/components/wizard/FileUpload";
+import { ResumeForm } from "@/components/wizard/ResumeForm";
+import { WizardLayout } from "@/components/wizard/WizardLayout";
 import { ResumeData } from "@/types/resume";
 
 interface WizardStepsProps {
@@ -12,23 +10,15 @@ interface WizardStepsProps {
   formData: {
     jobUrl: string;
     resume: File | null;
-    withExtraUserDetails: boolean;
-    extraUserDetails: string;
   };
   resumeData: ResumeData | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onFormDataChange: (data: any) => void;
   onResumeDataChange: (data: ResumeData) => void;
   onResumeDataExtracted: (data: ResumeData) => void;
 }
 
-export const WizardSteps = ({
-  currentStep,
-  formData,
-  resumeData,
-  onFormDataChange,
-  onResumeDataChange,
-  onResumeDataExtracted,
-}: WizardStepsProps) => {
+export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChange, onResumeDataChange, onResumeDataExtracted }: WizardStepsProps) => {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -59,28 +49,6 @@ export const WizardSteps = ({
                   onResumeDataExtracted={onResumeDataExtracted}
                 />
               </div>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="extra-user-details"
-                    checked={formData.withExtraUserDetails}
-                    onCheckedChange={(checked) =>
-                      onFormDataChange({ ...formData, withExtraUserDetails: checked })
-                    }
-                  />
-                  <Label htmlFor="extra-user-details">Add extra details about yourself</Label>
-                </div>
-                {formData.withExtraUserDetails && (
-                  <Textarea
-                    placeholder="Give us extra details about yourself, your skills, and your experience..."
-                    value={formData.extraUserDetails}
-                    onChange={(e) =>
-                      onFormDataChange({ ...formData, extraUserDetails: e.target.value })
-                    }
-                    className="h-48"
-                  />
-                )}
-              </div>
             </div>
           </WizardLayout>
         );
@@ -90,9 +58,7 @@ export const WizardSteps = ({
             {resumeData ? (
               <ResumeForm resumeData={resumeData} onChange={onResumeDataChange} />
             ) : (
-              <div className="text-center py-8 text-gray-500">
-                No resume data available. Please upload a resume in the previous step.
-              </div>
+              <div className="text-center py-8 text-gray-500">No resume data available. Please upload a resume in the previous step.</div>
             )}
           </WizardLayout>
         );
@@ -108,12 +74,6 @@ export const WizardSteps = ({
                 <h3 className="text-sm font-medium text-gray-500">Resume</h3>
                 <p className="text-navy">{formData.resume?.name}</p>
               </div>
-              {formData.withExtraUserDetails && (
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-gray-500">Additional Details</h3>
-                  <p className="text-navy whitespace-pre-wrap">{formData.extraUserDetails}</p>
-                </div>
-              )}
               {resumeData && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">

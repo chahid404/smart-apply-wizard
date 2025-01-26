@@ -1,7 +1,4 @@
-import { Header } from "@/components/layout/Header";
-import { AppSidebar } from "@/components/layout/Sidebar";
 import { Card } from "@/components/ui/card";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { useToast } from "@/components/ui/use-toast";
 import { WizardNavigation } from "@/components/wizard/WizardNavigation";
 import { WizardSteps } from "@/components/wizard/WizardSteps";
@@ -14,8 +11,6 @@ const Index = () => {
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
-    withExtraUserDetails: true,
-    extraUserDetails: "",
   });
   const [resumeData, setResumeData] = useState<ResumeData | null>(null);
   const { toast } = useToast();
