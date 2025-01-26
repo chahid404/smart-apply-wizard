@@ -1,13 +1,13 @@
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUpload } from "@/components/wizard/FileUpload";
 import { ResumeForm } from "@/components/wizard/ResumeForm";
 import { WizardLayout } from "@/components/wizard/WizardLayout";
 import { AdditionalCandidateInfo, ResumeData } from "@/types/resume";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
 
 interface WizardStepsProps {
   currentStep: number;
@@ -16,8 +16,11 @@ interface WizardStepsProps {
     resume: File | null;
     additionalInfo?: string;
     candidateInfo?: AdditionalCandidateInfo;
+    withExtraUserDetails: boolean;
+    extraUserDetails: string;
   };
   resumeData: ResumeData | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onFormDataChange: (data: any) => void;
   onResumeDataChange: (data: ResumeData) => void;
   onResumeDataExtracted: (data: ResumeData) => void;
@@ -64,6 +67,24 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   onResumeDataExtracted={onResumeDataExtracted}
                 />
               </div>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="extra-user-details"
+                    checked={formData.withExtraUserDetails}
+                    onCheckedChange={(checked) => onFormDataChange({ ...formData, withExtraUserDetails: checked })}
+                  />
+                  <Label htmlFor="extra-user-details">Add extra details about yourself</Label>
+                </div>
+                {formData.withExtraUserDetails && (
+                  <Textarea
+                    placeholder="Give us extra details about yourself, your skills, and your experience..."
+                    value={formData.extraUserDetails}
+                    onChange={(e) => onFormDataChange({ ...formData, extraUserDetails: e.target.value })}
+                    className="h-48"
+                  />
+                )}
+              </div>
             </div>
           </WizardLayout>
         );
@@ -86,38 +107,38 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   <Label>Visa Status</Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                     <div className="flex items-center space-x-2">
-                      <Checkbox 
+                      <Checkbox
                         id="visaEurope"
                         checked={formData.candidateInfo?.visaStatus.europe}
-                        onCheckedChange={(checked) => 
+                        onCheckedChange={(checked) =>
                           onFormDataChange({
                             ...formData,
                             candidateInfo: {
                               ...formData.candidateInfo,
                               visaStatus: {
                                 ...formData.candidateInfo?.visaStatus,
-                                europe: checked
-                              }
-                            }
+                                europe: checked,
+                              },
+                            },
                           })
                         }
                       />
                       <Label htmlFor="visaEurope">Valid Visa for Europe</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox 
+                      <Checkbox
                         id="visaUSA"
                         checked={formData.candidateInfo?.visaStatus.usa}
-                        onCheckedChange={(checked) => 
+                        onCheckedChange={(checked) =>
                           onFormDataChange({
                             ...formData,
                             candidateInfo: {
                               ...formData.candidateInfo,
                               visaStatus: {
                                 ...formData.candidateInfo?.visaStatus,
-                                usa: checked
-                              }
-                            }
+                                usa: checked,
+                              },
+                            },
                           })
                         }
                       />
@@ -132,13 +153,13 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                     id="noticePeriod"
                     placeholder="e.g., 2 months"
                     value={formData.candidateInfo?.noticePeriod || ""}
-                    onChange={(e) => 
+                    onChange={(e) =>
                       onFormDataChange({
                         ...formData,
                         candidateInfo: {
                           ...formData.candidateInfo,
-                          noticePeriod: e.target.value
-                        }
+                          noticePeriod: e.target.value,
+                        },
                       })
                     }
                   />
@@ -150,13 +171,13 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                     id="salaryExpectation"
                     placeholder="e.g., $80,000 - $100,000"
                     value={formData.candidateInfo?.salaryExpectation || ""}
-                    onChange={(e) => 
+                    onChange={(e) =>
                       onFormDataChange({
                         ...formData,
                         candidateInfo: {
                           ...formData.candidateInfo,
-                          salaryExpectation: e.target.value
-                        }
+                          salaryExpectation: e.target.value,
+                        },
                       })
                     }
                   />
@@ -166,13 +187,13 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   <Label>Gender</Label>
                   <RadioGroup
                     value={formData.candidateInfo?.gender || "prefer_not_to_say"}
-                    onValueChange={(value) => 
+                    onValueChange={(value) =>
                       onFormDataChange({
                         ...formData,
                         candidateInfo: {
                           ...formData.candidateInfo,
-                          gender: value
-                        }
+                          gender: value,
+                        },
                       })
                     }
                     className="flex flex-col space-y-2"
@@ -200,13 +221,13 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   <Label>Work Preference</Label>
                   <RadioGroup
                     value={formData.candidateInfo?.workPreference || "onsite"}
-                    onValueChange={(value) => 
+                    onValueChange={(value) =>
                       onFormDataChange({
                         ...formData,
                         candidateInfo: {
                           ...formData.candidateInfo,
-                          workPreference: value
-                        }
+                          workPreference: value,
+                        },
                       })
                     }
                     className="flex flex-col space-y-2"
@@ -227,16 +248,16 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <Checkbox 
+                  <Checkbox
                     id="availableToTravel"
                     checked={formData.candidateInfo?.availableToTravel}
-                    onCheckedChange={(checked) => 
+                    onCheckedChange={(checked) =>
                       onFormDataChange({
                         ...formData,
                         candidateInfo: {
                           ...formData.candidateInfo,
-                          availableToTravel: checked as boolean
-                        }
+                          availableToTravel: checked as boolean,
+                        },
                       })
                     }
                   />
@@ -244,16 +265,16 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <Checkbox 
+                  <Checkbox
                     id="willingToRelocate"
                     checked={formData.candidateInfo?.willingToRelocate}
-                    onCheckedChange={(checked) => 
+                    onCheckedChange={(checked) =>
                       onFormDataChange({
                         ...formData,
                         candidateInfo: {
                           ...formData.candidateInfo,
-                          willingToRelocate: checked as boolean
-                        }
+                          willingToRelocate: checked as boolean,
+                        },
                       })
                     }
                   />
@@ -264,13 +285,13 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   <Label>Employment Status</Label>
                   <RadioGroup
                     value={formData.candidateInfo?.currentEmploymentStatus || "employed"}
-                    onValueChange={(value) => 
+                    onValueChange={(value) =>
                       onFormDataChange({
                         ...formData,
                         candidateInfo: {
                           ...formData.candidateInfo,
-                          currentEmploymentStatus: value
-                        }
+                          currentEmploymentStatus: value,
+                        },
                       })
                     }
                     className="flex flex-col space-y-2"
@@ -309,6 +330,12 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                 <h3 className="text-sm font-medium text-gray-500">Resume</h3>
                 <p className="text-navy">{formData.resume?.name}</p>
               </div>
+              {formData.withExtraUserDetails && (
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-gray-500">Additional Details</h3>
+                  <p className="text-navy whitespace-pre-wrap">{formData.extraUserDetails}</p>
+                </div>
+              )}
               {resumeData && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
