@@ -1,18 +1,29 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import { routes, routeTitles } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { FileText, Home, Settings, Users, Coins } from "lucide-react";
+import { Coins, FileText, Home, Settings, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const menuItems = [
-  { title: "Dashboard", icon: Home, url: "/" },
-  { title: "Applications", icon: FileText, url: "/applications" },
-  { title: "Profile", icon: Users, url: "/profile" },
-  { title: "Tokens", icon: Coins, url: "/tokens" },
-  { title: "Settings", icon: Settings, url: "/settings" },
+  { title: routeTitles[routes.Dashboard], icon: Home, url: routes.Dashboard },
+  { title: routeTitles[routes.Applications], icon: FileText, url: routes.Applications },
+  { title: routeTitles[routes.Profile], icon: Users, url: routes.Profile },
+  { title: routeTitles[routes.Tokens], icon: Coins, url: routes.Tokens },
+  { title: routeTitles[routes.Settings], icon: Settings, url: routes.Settings },
 ];
 
 export const AppSidebar = () => {
   const navigate = useNavigate();
+  const { setOpenMobile, isMobile } = useSidebar();
 
   return (
     <Sidebar>
@@ -24,7 +35,12 @@ export const AppSidebar = () => {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <a
-                    onClick={() => navigate(`${item.url}`)}
+                    onClick={() => {
+                      navigate(`${item.url}`);
+                      if (isMobile) {
+                        setOpenMobile(false);
+                      }
+                    }}
                     className={cn(
                       "flex items-center gap-3 p-3",
                       "transition-all duration-300 ease-out",
