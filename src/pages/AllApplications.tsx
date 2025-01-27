@@ -2,14 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import { Edit2, Eye, Filter, Grid, List, PlusCircle, Search, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -67,33 +60,19 @@ const AllApplications = () => {
                   <h3 className="font-semibold text-navy">{application.jobTitle}</h3>
                   <p className="text-gray-600">{application.company}</p>
                 </div>
-                <Badge className={statusColors[application.status as keyof typeof statusColors]}>
-                  {application.status.replace("_", " ")}
-                </Badge>
+                <Badge className={statusColors[application.status as keyof typeof statusColors]}>{application.status.replace("_", " ")}</Badge>
               </div>
-              <div className="text-sm text-gray-500">
-                Applied: {new Date(application.dateApplied).toLocaleDateString()}
-              </div>
+              <div className="text-sm text-gray-500">Applied: {new Date(application.dateApplied).toLocaleDateString()}</div>
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-500">{application.platform}</div>
                 <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => navigate(`/application/${application.id}`)}
-                    className="hover:text-navy"
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => navigate(`/application/${application.id}`)} className="hover:text-navy">
                     <Eye className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" className="hover:text-navy">
                     <Edit2 className="h-4 w-4" />
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDelete(application.id)}
-                    className="hover:bg-red-300"
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => handleDelete(application.id)} className="hover:bg-red-300">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
@@ -114,7 +93,7 @@ const AllApplications = () => {
   );
 
   const renderTableView = () => (
-    <div className="w-full overflow-auto rounded-lg border">
+    <div className="w-full overflow-auto rounded-lg border bg-white">
       <Table>
         <TableHeader>
           <TableRow>
@@ -133,30 +112,18 @@ const AllApplications = () => {
               <TableCell>{application.company}</TableCell>
               <TableCell>{new Date(application.dateApplied).toLocaleDateString()}</TableCell>
               <TableCell>
-                <Badge className={statusColors[application.status as keyof typeof statusColors]}>
-                  {application.status.replace("_", " ")}
-                </Badge>
+                <Badge className={statusColors[application.status as keyof typeof statusColors]}>{application.status.replace("_", " ")}</Badge>
               </TableCell>
               <TableCell>{application.platform}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => navigate(`/application/${application.id}`)}
-                    className="hover:text-navy"
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => navigate(`/application/${application.id}`)} className="hover:text-navy">
                     <Eye className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" className="hover:text-navy">
                     <Edit2 className="h-4 w-4" />
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDelete(application.id)}
-                    className="hover:bg-red-300"
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => handleDelete(application.id)} className="hover:bg-red-300">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
@@ -186,24 +153,14 @@ const AllApplications = () => {
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
-          <Input
-            placeholder="Search applications..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+          <Input placeholder="Search applications..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10" />
         </div>
         <div className="flex gap-2">
           <Button variant="outline" className="gap-2">
             <Filter className="h-4 w-4" />
             Filters
           </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setViewMode(viewMode === "card" ? "table" : "card")}
-            className="hover:text-navy"
-          >
+          <Button variant="outline" size="icon" onClick={() => setViewMode(viewMode === "card" ? "table" : "card")} className="hover:text-navy">
             {viewMode === "card" ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
           </Button>
         </div>
