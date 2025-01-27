@@ -14,7 +14,6 @@ interface WizardStepsProps {
   formData: {
     jobUrl: string;
     resume: File | null;
-    additionalInfo?: string;
     candidateInfo?: AdditionalCandidateInfo;
     withExtraUserDetails: boolean;
     extraUserDetails: string;
@@ -40,16 +39,6 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   placeholder="https://example.com/job-posting"
                   value={formData.jobUrl}
                   onChange={(e) => onFormDataChange({ ...formData, jobUrl: e.target.value })}
-                />
-              </div>
-              <div className="space-y-2 py-4">
-                <Label htmlFor="additionalInfo">Additional Information</Label>
-                <Textarea
-                  id="additionalInfo"
-                  placeholder="Add any additional information about yourself or the job posting that might help the AI better understand your application..."
-                  value={formData.additionalInfo || ""}
-                  onChange={(e) => onFormDataChange({ ...formData, additionalInfo: e.target.value })}
-                  className="min-h-[120px]"
                 />
               </div>
             </div>

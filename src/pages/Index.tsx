@@ -11,7 +11,6 @@ const Index = () => {
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
-    additionalInfo: "",
     candidateInfo: {
       visaStatus: {
         europe: false,
