@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUpload } from "@/components/wizard/FileUpload";
 import { ResumeForm } from "@/components/wizard/ResumeForm";
@@ -56,24 +56,6 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   onResumeDataExtracted={onResumeDataExtracted}
                 />
               </div>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="extra-user-details"
-                    checked={formData.withExtraUserDetails}
-                    onCheckedChange={(checked) => onFormDataChange({ ...formData, withExtraUserDetails: checked })}
-                  />
-                  <Label htmlFor="extra-user-details">Add extra details about yourself</Label>
-                </div>
-                {formData.withExtraUserDetails && (
-                  <Textarea
-                    placeholder="Give us extra details about yourself, your skills, and your experience..."
-                    value={formData.extraUserDetails}
-                    onChange={(e) => onFormDataChange({ ...formData, extraUserDetails: e.target.value })}
-                    className="h-48"
-                  />
-                )}
-              </div>
             </div>
           </WizardLayout>
         );
@@ -90,8 +72,8 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
       case 4:
         return (
           <WizardLayout title="Additional Information" currentStep={currentStep} totalSteps={5}>
-            <div className="space-y-6">
-              <div className="space-y-4">
+            <div className="space-y-8">
+              <div className="space-y-2 py-4">
                 <div>
                   <Label>Visa Status</Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
@@ -136,138 +118,143 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="noticePeriod">Notice Period</Label>
-                  <Input
-                    id="noticePeriod"
-                    placeholder="e.g., 2 months"
-                    value={formData.candidateInfo?.noticePeriod || ""}
-                    onChange={(e) =>
-                      onFormDataChange({
-                        ...formData,
-                        candidateInfo: {
-                          ...formData.candidateInfo,
-                          noticePeriod: e.target.value,
-                        },
-                      })
-                    }
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="availableToTravel"
+                      checked={formData.candidateInfo?.availableToTravel}
+                      onCheckedChange={(checked) =>
+                        onFormDataChange({
+                          ...formData,
+                          candidateInfo: {
+                            ...formData.candidateInfo,
+                            availableToTravel: checked as boolean,
+                          },
+                        })
+                      }
+                    />
+                    <Label htmlFor="availableToTravel">Available to Travel</Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="willingToRelocate"
+                      checked={formData.candidateInfo?.willingToRelocate}
+                      onCheckedChange={(checked) =>
+                        onFormDataChange({
+                          ...formData,
+                          candidateInfo: {
+                            ...formData.candidateInfo,
+                            willingToRelocate: checked as boolean,
+                          },
+                        })
+                      }
+                    />
+                    <Label htmlFor="willingToRelocate">Willing to Relocate</Label>
+                  </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="salaryExpectation">Salary Expectation</Label>
-                  <Input
-                    id="salaryExpectation"
-                    placeholder="e.g., $80,000 - $100,000"
-                    value={formData.candidateInfo?.salaryExpectation || ""}
-                    onChange={(e) =>
-                      onFormDataChange({
-                        ...formData,
-                        candidateInfo: {
-                          ...formData.candidateInfo,
-                          salaryExpectation: e.target.value,
-                        },
-                      })
-                    }
-                  />
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="noticePeriod">Notice Period</Label>
+                    <Input
+                      id="noticePeriod"
+                      placeholder="e.g., 2 months"
+                      value={formData.candidateInfo?.noticePeriod || ""}
+                      onChange={(e) =>
+                        onFormDataChange({
+                          ...formData,
+                          candidateInfo: {
+                            ...formData.candidateInfo,
+                            noticePeriod: e.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <Label>Gender</Label>
-                  <RadioGroup
-                    value={formData.candidateInfo?.gender || "prefer_not_to_say"}
-                    onValueChange={(value) =>
-                      onFormDataChange({
-                        ...formData,
-                        candidateInfo: {
-                          ...formData.candidateInfo,
-                          gender: value,
-                        },
-                      })
-                    }
-                    className="flex flex-col space-y-2"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="male" id="male" />
-                      <Label htmlFor="male">Male</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="female" id="female" />
-                      <Label htmlFor="female">Female</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="other" id="other" />
-                      <Label htmlFor="other">Other</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="prefer_not_to_say" id="prefer_not_to_say" />
-                      <Label htmlFor="prefer_not_to_say">Prefer not to say</Label>
-                    </div>
-                  </RadioGroup>
+                  <div className="space-y-2">
+                    <Label htmlFor="salaryExpectation">Salary Expectation</Label>
+                    <Input
+                      id="salaryExpectation"
+                      placeholder="e.g., $80,000 - $100,000"
+                      value={formData.candidateInfo?.salaryExpectation || ""}
+                      onChange={(e) =>
+                        onFormDataChange({
+                          ...formData,
+                          candidateInfo: {
+                            ...formData.candidateInfo,
+                            salaryExpectation: e.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Gender</Label>
+                    <RadioGroup
+                      value={formData.candidateInfo?.gender || "prefer_not_to_say"}
+                      onValueChange={(value) =>
+                        onFormDataChange({
+                          ...formData,
+                          candidateInfo: {
+                            ...formData.candidateInfo,
+                            gender: value,
+                          },
+                        })
+                      }
+                      className="flex flex-col space-y-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="male" id="male" />
+                        <Label htmlFor="male">Male</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="female" id="female" />
+                        <Label htmlFor="female">Female</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="other" id="other" />
+                        <Label htmlFor="other">Other</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="prefer_not_to_say" id="prefer_not_to_say" />
+                        <Label htmlFor="prefer_not_to_say">Prefer not to say</Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
 
-                <div className="space-y-2">
-                  <Label>Work Preference</Label>
-                  <RadioGroup
-                    value={formData.candidateInfo?.workPreference || "onsite"}
-                    onValueChange={(value) =>
-                      onFormDataChange({
-                        ...formData,
-                        candidateInfo: {
-                          ...formData.candidateInfo,
-                          workPreference: value,
-                        },
-                      })
-                    }
-                    className="flex flex-col space-y-2"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="remote" id="remote" />
-                      <Label htmlFor="remote">Remote</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="hybrid" id="hybrid" />
-                      <Label htmlFor="hybrid">Hybrid</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="onsite" id="onsite" />
-                      <Label htmlFor="onsite">On-site</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="availableToTravel"
-                    checked={formData.candidateInfo?.availableToTravel}
-                    onCheckedChange={(checked) =>
-                      onFormDataChange({
-                        ...formData,
-                        candidateInfo: {
-                          ...formData.candidateInfo,
-                          availableToTravel: checked as boolean,
-                        },
-                      })
-                    }
-                  />
-                  <Label htmlFor="availableToTravel">Available to Travel</Label>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="willingToRelocate"
-                    checked={formData.candidateInfo?.willingToRelocate}
-                    onCheckedChange={(checked) =>
-                      onFormDataChange({
-                        ...formData,
-                        candidateInfo: {
-                          ...formData.candidateInfo,
-                          willingToRelocate: checked as boolean,
-                        },
-                      })
-                    }
-                  />
-                  <Label htmlFor="willingToRelocate">Willing to Relocate</Label>
+                  <div className="space-y-2">
+                    <Label>Work Preference</Label>
+                    <RadioGroup
+                      value={formData.candidateInfo?.workPreference || "onsite"}
+                      onValueChange={(value) =>
+                        onFormDataChange({
+                          ...formData,
+                          candidateInfo: {
+                            ...formData.candidateInfo,
+                            workPreference: value,
+                          },
+                        })
+                      }
+                      className="flex flex-col space-y-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="remote" id="remote" />
+                        <Label htmlFor="remote">Remote</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="hybrid" id="hybrid" />
+                        <Label htmlFor="hybrid">Hybrid</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="onsite" id="onsite" />
+                        <Label htmlFor="onsite">On-site</Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -302,6 +289,19 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                       <Label htmlFor="student">Student</Label>
                     </div>
                   </RadioGroup>
+                </div>
+
+                <div className="py-4">
+                  <Separator />
+                </div>
+                <div className="space-y-2">
+                  <Label>Add extra details about yourself</Label>
+                  <Textarea
+                    placeholder="Give us extra details about yourself, your skills, and your experience..."
+                    value={formData.extraUserDetails}
+                    onChange={(e) => onFormDataChange({ ...formData, extraUserDetails: e.target.value })}
+                    className="h-48"
+                  />
                 </div>
               </div>
             </div>

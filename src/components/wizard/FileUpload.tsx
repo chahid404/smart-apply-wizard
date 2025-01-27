@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { ResumeData } from "@/types/resume";
 import { generateMockResumeData } from "@/utils/mockResumeData";
 import { motion } from "framer-motion";
-import { Check, File, ScanSearch, Upload, X } from "lucide-react";
+import { File, ScanSearch, Upload, X } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import StatusAlert from "../ui/StatusAlert";
@@ -17,49 +15,37 @@ interface FileUploadProps {
 }
 
 export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }: FileUploadProps) => {
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [tempFile, setTempFile] = useState<File | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
   const [scanSuccess, setScanSuccess] = useState(null);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      setTempFile(acceptedFiles[0]);
-      setShowConfirmDialog(true);
-    }
-  }, []);
-
-  const handleConfirm = () => {
-    setShowConfirmDialog(false);
-    if (tempFile) {
-      onFileSelect(tempFile);
-      setIsScanning(true);
-      // Simulate scanning progress
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 2;
-        setScanProgress(progress);
-        if (progress >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            setIsScanning(false);
-            // Generate and save mock data
-            const mockData = generateMockResumeData();
-            localStorage.setItem("resumeData", JSON.stringify(mockData));
-            onResumeDataExtracted(mockData);
-            setScanSuccess(true);
-          }, 500);
-        }
-      }, 50);
-    }
-  };
-
-  const handleCancel = () => {
-    setShowConfirmDialog(false);
-    setTempFile(null);
-  };
-
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0];
+        onFileSelect(file);
+        setIsScanning(true);
+        // Simulate scanning progress
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 2;
+          setScanProgress(progress);
+          if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+              setIsScanning(false);
+              // Generate and save mock data
+              const mockData = generateMockResumeData();
+              localStorage.setItem("resumeData", JSON.stringify(mockData));
+              onResumeDataExtracted(mockData);
+              setScanSuccess(true);
+            }, 500);
+          }
+        }, 50);
+      }
+    },
+    [onFileSelect, onResumeDataExtracted]
+  );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
@@ -127,30 +113,6 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
         </motion.div>
       )}
       <StatusAlert status={scanSuccess} successMessage="Resume scanned successfully!" errorMessage="Resume scan failed. Please try again." />
-      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirm Resume Upload</DialogTitle>
-            <DialogDescription>Are you sure you want to upload {tempFile?.name}?</DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-            <File className="w-6 h-6 text-navy" />
-            <div>
-              <p className="text-sm font-medium text-gray-700">{tempFile?.name}</p>
-              <p className="text-xs text-gray-400">{tempFile && (tempFile.size / 1024 / 1024).toFixed(2)} MB</p>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button onClick={handleConfirm} className="bg-navy hover:bg-navy-light">
-              <Check className="w-4 h-4 mr-2" />
-              Confirm
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
