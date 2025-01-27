@@ -126,40 +126,42 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="noticePeriod">Notice Period</Label>
-                  <Input
-                    id="noticePeriod"
-                    placeholder="e.g., 2 months"
-                    value={formData.candidateInfo?.noticePeriod || ""}
-                    onChange={(e) => 
-                      onFormDataChange({
-                        ...formData,
-                        candidateInfo: {
-                          ...formData.candidateInfo,
-                          noticePeriod: e.target.value
-                        }
-                      })
-                    }
-                  />
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="noticePeriod">Notice Period</Label>
+                    <Input
+                      id="noticePeriod"
+                      placeholder="e.g., 2 months"
+                      value={formData.candidateInfo?.noticePeriod || ""}
+                      onChange={(e) => 
+                        onFormDataChange({
+                          ...formData,
+                          candidateInfo: {
+                            ...formData.candidateInfo,
+                            noticePeriod: e.target.value
+                          }
+                        })
+                      }
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="salaryExpectation">Salary Expectation</Label>
-                  <Input
-                    id="salaryExpectation"
-                    placeholder="e.g., $80,000 - $100,000"
-                    value={formData.candidateInfo?.salaryExpectation || ""}
-                    onChange={(e) => 
-                      onFormDataChange({
-                        ...formData,
-                        candidateInfo: {
-                          ...formData.candidateInfo,
-                          salaryExpectation: e.target.value
-                        }
-                      })
-                    }
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="salaryExpectation">Salary Expectation</Label>
+                    <Input
+                      id="salaryExpectation"
+                      placeholder="e.g., $80,000 - $100,000"
+                      value={formData.candidateInfo?.salaryExpectation || ""}
+                      onChange={(e) => 
+                        onFormDataChange({
+                          ...formData,
+                          candidateInfo: {
+                            ...formData.candidateInfo,
+                            salaryExpectation: e.target.value
+                          }
+                        })
+                      }
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
