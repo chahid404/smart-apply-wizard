@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ResumeData } from "@/types/resume";
-import { Briefcase, Building2, GraduationCap, Plus, Trash2, User } from "lucide-react";
+import { Briefcase, Building2, GraduationCap, Languages, Plus, Sparkles, Trash2, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface ResumeFormProps {
   resumeData: ResumeData;
@@ -92,9 +94,56 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
     });
   };
 
+  const addLanguage = () => {
+    onChange({
+      ...resumeData,
+      languages: [
+        ...(resumeData.languages || []),
+        {
+          name: "",
+          proficiency: "Basic",
+        },
+      ],
+    });
+  };
+
+  const updateLanguage = (index: number, field: keyof ResumeData["languages"][0], value: string) => {
+    const newLanguages = [...(resumeData.languages || [])];
+    newLanguages[index] = {
+      ...newLanguages[index],
+      [field]: value,
+    };
+    onChange({
+      ...resumeData,
+      languages: newLanguages,
+    });
+  };
+
+  const removeLanguage = (index: number) => {
+    onChange({
+      ...resumeData,
+      languages: (resumeData.languages || []).filter((_, i) => i !== index),
+    });
+  };
+
+  const addSkill = (skill: string) => {
+    if (skill.trim() && !resumeData.skills.includes(skill.trim())) {
+      onChange({
+        ...resumeData,
+        skills: [...resumeData.skills, skill.trim()],
+      });
+    }
+  };
+
+  const removeSkill = (skillToRemove: string) => {
+    onChange({
+      ...resumeData,
+      skills: resumeData.skills.filter((skill) => skill !== skillToRemove),
+    });
+  };
+
   return (
     <div className="space-y-6 mt-8">
-      {/* Personal Information Section */}
       <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
         <div className="flex items-center gap-2 text-lg font-semibold text-navy">
           <User className="h-5 w-5" />
@@ -150,7 +199,6 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
         </div>
       </div>
 
-      {/* Professional Summary Section */}
       <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
         <div className="flex items-center gap-2 text-lg font-semibold text-navy">
           <Briefcase className="h-5 w-5" />
@@ -163,7 +211,6 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
         />
       </div>
 
-      {/* Education Section */}
       <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
         <div className="flex items-center gap-2 text-lg font-semibold text-navy">
           <GraduationCap className="h-5 w-5" />
@@ -233,7 +280,6 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
         </div>
       </div>
 
-      {/* Experience Section */}
       <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
         <div className="flex items-center gap-2 text-lg font-semibold text-navy">
           <Building2 className="h-5 w-5" />
@@ -323,26 +369,107 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
         </div>
       </div>
 
-      {/* Skills Section */}
       <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
         <div className="flex items-center gap-2 text-lg font-semibold text-navy">
-          <Briefcase className="h-5 w-5" />
+          <Languages className="h-5 w-5" />
+          <h3>Languages</h3>
+        </div>
+        <div className="space-y-6">
+          {(resumeData.languages || []).map((lang, index) => (
+            <div key={index} className="space-y-4 p-4 border rounded-lg relative bg-white/30 hover:bg-white/40 transition-colors">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="absolute right-2 top-2 group hover:bg-red-300" 
+                onClick={() => removeLanguage(index)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor={`language-${index}`}>Language</Label>
+                  <Input
+                    id={`language-${index}`}
+                    value={lang.name}
+                    onChange={(e) => updateLanguage(index, "name", e.target.value)}
+                    className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor={`proficiency-${index}`}>Proficiency</Label>
+                  <Select
+                    value={lang.proficiency}
+                    onValueChange={(value) => updateLanguage(index, "proficiency", value)}
+                  >
+                    <SelectTrigger className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors">
+                      <SelectValue placeholder="Select proficiency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Basic">Basic</SelectItem>
+                      <SelectItem value="Intermediate">Intermediate</SelectItem>
+                      <SelectItem value="Advanced">Advanced</SelectItem>
+                      <SelectItem value="Fluent">Fluent</SelectItem>
+                      <SelectItem value="Native">Native</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          ))}
+          <Button 
+            type="button" 
+            variant="outline" 
+            className="w-full hover:bg-teal-light/10" 
+            onClick={addLanguage}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Language
+          </Button>
+        </div>
+      </div>
+
+      <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
+        <div className="flex items-center gap-2 text-lg font-semibold text-navy">
+          <Sparkles className="h-5 w-5" />
           <h3>Skills</h3>
         </div>
-        <Textarea
-          value={resumeData.skills.join(", ")}
-          onChange={(e) =>
-            onChange({
-              ...resumeData,
-              skills: e.target.value
-                .split(",")
-                .map((skill) => skill.trim())
-                .filter(Boolean),
-            })
-          }
-          placeholder="Enter skills separated by commas"
-          className="min-h-[100px] bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
-        />
+        <div className="space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {resumeData.skills.map((skill, index) => (
+              <Badge
+                key={index}
+                variant="secondary"
+                className="px-3 py-1 bg-white/70 hover:bg-white/90 cursor-pointer group"
+                onClick={() => removeSkill(skill)}
+              >
+                {skill}
+                <Trash2 className="h-3 w-3 ml-2 opacity-0 group-hover:opacity-100 transition-opacity inline-block" />
+              </Badge>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <Input
+              placeholder="Add a new skill"
+              className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  addSkill((e.target as HTMLInputElement).value);
+                  (e.target as HTMLInputElement).value = '';
+                }
+              }}
+            />
+            <Button
+              type="button"
+              onClick={(e) => {
+                const input = e.currentTarget.previousElementSibling as HTMLInputElement;
+                addSkill(input.value);
+                input.value = '';
+              }}
+            >
+              Add
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
