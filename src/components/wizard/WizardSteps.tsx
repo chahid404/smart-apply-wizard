@@ -1,25 +1,22 @@
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUpload } from "@/components/wizard/FileUpload";
 import { ResumeForm } from "@/components/wizard/ResumeForm";
 import { WizardLayout } from "@/components/wizard/WizardLayout";
-import { AdditionalCandidateInfo, ResumeData } from "@/types/resume";
-import { Briefcase, Building2, Globe2, MapPin } from "lucide-react";
+import { ExtraInformation, ResumeData } from "@/types/resume";
+import { BadgeCheck, Briefcase, Building2, FileCheck, Globe2, MapPin } from "lucide-react";
 
 interface WizardStepsProps {
   currentStep: number;
   formData: {
     jobUrl: string;
     resume: File | null;
-    candidateInfo?: AdditionalCandidateInfo;
-    withExtraUserDetails: boolean;
-    extraUserDetails: string;
+    extraInformation: ExtraInformation;
   };
   resumeData: ResumeData | null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onFormDataChange: (data: any) => void;
   onResumeDataChange: (data: ResumeData) => void;
   onResumeDataExtracted: (data: ResumeData) => void;
@@ -73,189 +70,11 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
         return (
           <WizardLayout title="Additional Information" currentStep={currentStep} totalSteps={4}>
             <div className="space-y-8">
-              {/* Work Preferences Section */}
-              <div className="bg-white rounded-lg mt-6 p-6 space-y-6 border shadow-sm">
+              {/* Basic Information Section */}
+              <div className="bg-white/30 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
                 <div className="flex items-center gap-2 text-lg font-semibold text-navy">
                   <Briefcase className="h-5 w-5" />
-                  <h3>Work Preferences</h3>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <Label>Work Model</Label>
-                    <RadioGroup
-                      value={formData.candidateInfo?.workPreference || "onsite"}
-                      onValueChange={(value) =>
-                        onFormDataChange({
-                          ...formData,
-                          candidateInfo: {
-                            ...formData.candidateInfo,
-                            workPreference: value,
-                          },
-                        })
-                      }
-                      className="grid grid-cols-3 gap-2"
-                    >
-                      <div className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-                        <RadioGroupItem value="remote" id="remote" />
-                        <Label htmlFor="remote" className="cursor-pointer">
-                          Remote
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-                        <RadioGroupItem value="hybrid" id="hybrid" />
-                        <Label htmlFor="hybrid" className="cursor-pointer">
-                          Hybrid
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-                        <RadioGroupItem value="onsite" id="onsite" />
-                        <Label htmlFor="onsite" className="cursor-pointer">
-                          On-site
-                        </Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
-
-                  <div className="space-y-4">
-                    <Label>Employment Status</Label>
-                    <RadioGroup
-                      value={formData.candidateInfo?.currentEmploymentStatus || "employed"}
-                      onValueChange={(value) =>
-                        onFormDataChange({
-                          ...formData,
-                          candidateInfo: {
-                            ...formData.candidateInfo,
-                            currentEmploymentStatus: value,
-                          },
-                        })
-                      }
-                      className="grid grid-cols-2 gap-2"
-                    >
-                      {[
-                        { value: "employed", label: "Employed" },
-                        { value: "unemployed", label: "Unemployed" },
-                        { value: "freelancer", label: "Freelancer" },
-                        { value: "student", label: "Student" },
-                      ].map((option) => (
-                        <div
-                          key={option.value}
-                          className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
-                        >
-                          <RadioGroupItem value={option.value} id={option.value} />
-                          <Label htmlFor={option.value} className="cursor-pointer">
-                            {option.label}
-                          </Label>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  </div>
-                </div>
-              </div>
-
-              {/* Location & Mobility Section */}
-              <div className="bg-white rounded-lg p-6 space-y-6 border shadow-sm">
-                <div className="flex items-center gap-2 text-lg font-semibold text-navy">
-                  <MapPin className="h-5 w-5" />
-                  <h3>Location & Mobility</h3>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <Label>Visa Status</Label>
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg">
-                        <Checkbox
-                          id="visaEurope"
-                          checked={formData.candidateInfo?.visaStatus.europe}
-                          onCheckedChange={(checked) =>
-                            onFormDataChange({
-                              ...formData,
-                              candidateInfo: {
-                                ...formData.candidateInfo,
-                                visaStatus: {
-                                  ...formData.candidateInfo?.visaStatus,
-                                  europe: checked,
-                                },
-                              },
-                            })
-                          }
-                        />
-                        <Label htmlFor="visaEurope" className="cursor-pointer">
-                          Valid Visa for Europe
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg">
-                        <Checkbox
-                          id="visaUSA"
-                          checked={formData.candidateInfo?.visaStatus.usa}
-                          onCheckedChange={(checked) =>
-                            onFormDataChange({
-                              ...formData,
-                              candidateInfo: {
-                                ...formData.candidateInfo,
-                                visaStatus: {
-                                  ...formData.candidateInfo?.visaStatus,
-                                  usa: checked,
-                                },
-                              },
-                            })
-                          }
-                        />
-                        <Label htmlFor="visaUSA" className="cursor-pointer">
-                          Valid Visa for USA
-                        </Label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <Label>Mobility</Label>
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg">
-                        <Checkbox
-                          id="availableToTravel"
-                          checked={formData.candidateInfo?.availableToTravel}
-                          onCheckedChange={(checked) =>
-                            onFormDataChange({
-                              ...formData,
-                              candidateInfo: {
-                                ...formData.candidateInfo,
-                                availableToTravel: checked as boolean,
-                              },
-                            })
-                          }
-                        />
-                        <Label htmlFor="availableToTravel" className="cursor-pointer">
-                          Available to Travel
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg">
-                        <Checkbox
-                          id="willingToRelocate"
-                          checked={formData.candidateInfo?.willingToRelocate}
-                          onCheckedChange={(checked) =>
-                            onFormDataChange({
-                              ...formData,
-                              candidateInfo: {
-                                ...formData.candidateInfo,
-                                willingToRelocate: checked as boolean,
-                              },
-                            })
-                          }
-                        />
-                        <Label htmlFor="willingToRelocate" className="cursor-pointer">
-                          Willing to Relocate
-                        </Label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Employment Details Section */}
-              <div className="bg-white rounded-lg p-6 space-y-6 border shadow-sm">
-                <div className="flex items-center gap-2 text-lg font-semibold text-navy">
-                  <Building2 className="h-5 w-5" />
-                  <h3>Employment Details</h3>
+                  <h3>Basic Information</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
@@ -263,12 +82,12 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                     <Input
                       id="noticePeriod"
                       placeholder="e.g., 2 months"
-                      value={formData.candidateInfo?.noticePeriod || ""}
+                      value={formData.extraInformation.noticePeriod}
                       onChange={(e) =>
                         onFormDataChange({
                           ...formData,
-                          candidateInfo: {
-                            ...formData.candidateInfo,
+                          extraInformation: {
+                            ...formData.extraInformation,
                             noticePeriod: e.target.value,
                           },
                         })
@@ -276,17 +95,19 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="salaryExpectation">Salary Expectation</Label>
+                    <Label htmlFor="salaryRangeUsd">Salary Expectation (USD)</Label>
                     <Input
-                      id="salaryExpectation"
+                      id="salaryRangeUsd"
                       placeholder="e.g., $80,000 - $100,000"
-                      value={formData.candidateInfo?.salaryExpectation || ""}
+                      value={formData.extraInformation.salaryExpectations.salaryRangeUsd}
                       onChange={(e) =>
                         onFormDataChange({
                           ...formData,
-                          candidateInfo: {
-                            ...formData.candidateInfo,
-                            salaryExpectation: e.target.value,
+                          extraInformation: {
+                            ...formData.extraInformation,
+                            salaryExpectations: {
+                              salaryRangeUsd: e.target.value,
+                            },
                           },
                         })
                       }
@@ -295,18 +116,228 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                 </div>
               </div>
 
-              {/* Additional Details Section */}
-              <div className="bg-white rounded-lg p-6 space-y-6 border shadow-sm">
+              {/* Work Authorization Section */}
+              <div className="bg-white/30 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
                 <div className="flex items-center gap-2 text-lg font-semibold text-navy">
                   <Globe2 className="h-5 w-5" />
+                  <h3>Work Authorization</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                  {/* Current Authorization */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Current Authorization</h4>
+                    {[
+                      { id: "euWorkAuthorization", label: "EU Work Authorization" },
+                      { id: "usWorkAuthorization", label: "US Work Authorization" },
+                      { id: "canadaWorkAuthorization", label: "Canada Work Authorization" },
+                      { id: "ukWorkAuthorization", label: "UK Work Authorization" },
+                    ].map((auth) => (
+                      <div
+                        key={auth.id}
+                        className="flex items-center space-x-2 bg-white/50 p-3 rounded-lg hover:bg-white/70 transition-colors"
+                      >
+                        <Checkbox
+                          id={auth.id}
+                          checked={formData.extraInformation.legalAuthorization[auth.id as keyof typeof formData.extraInformation.legalAuthorization]}
+                          onCheckedChange={(checked) =>
+                            onFormDataChange({
+                              ...formData,
+                              extraInformation: {
+                                ...formData.extraInformation,
+                                legalAuthorization: {
+                                  ...formData.extraInformation.legalAuthorization,
+                                  [auth.id]: checked,
+                                },
+                              },
+                            })
+                          }
+                        />
+                        <Label htmlFor={auth.id} className="cursor-pointer">
+                          {auth.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Visa Requirements */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Visa & Sponsorship Requirements</h4>
+                    {[
+                      { id: "requiresUsVisa", label: "Requires US Visa" },
+                      { id: "requiresUsSponsorship", label: "Requires US Sponsorship" },
+                      { id: "requiresEuVisa", label: "Requires EU Visa" },
+                      { id: "requiresEuSponsorship", label: "Requires EU Sponsorship" },
+                      { id: "requiresCanadaVisa", label: "Requires Canada Visa" },
+                      { id: "requiresCanadaSponsorship", label: "Requires Canada Sponsorship" },
+                      { id: "requiresUkVisa", label: "Requires UK Visa" },
+                      { id: "requiresUkSponsorship", label: "Requires UK Sponsorship" },
+                    ].map((req) => (
+                      <div
+                        key={req.id}
+                        className="flex items-center space-x-2 bg-white/50 p-3 rounded-lg hover:bg-white/70 transition-colors"
+                      >
+                        <Checkbox
+                          id={req.id}
+                          checked={formData.extraInformation.legalAuthorization[req.id as keyof typeof formData.extraInformation.legalAuthorization]}
+                          onCheckedChange={(checked) =>
+                            onFormDataChange({
+                              ...formData,
+                              extraInformation: {
+                                ...formData.extraInformation,
+                                legalAuthorization: {
+                                  ...formData.extraInformation.legalAuthorization,
+                                  [req.id]: checked,
+                                },
+                              },
+                            })
+                          }
+                        />
+                        <Label htmlFor={req.id} className="cursor-pointer">
+                          {req.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Legal Work Status */}
+                  <div className="space-y-4 md:col-span-2">
+                    <h4 className="font-medium">Legal Work Status</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {[
+                        { id: "legallyAllowedToWorkInEu", label: "Legally Allowed to Work in EU" },
+                        { id: "legallyAllowedToWorkInUs", label: "Legally Allowed to Work in US" },
+                        { id: "legallyAllowedToWorkInCanada", label: "Legally Allowed to Work in Canada" },
+                        { id: "legallyAllowedToWorkInUk", label: "Legally Allowed to Work in UK" },
+                      ].map((status) => (
+                        <div
+                          key={status.id}
+                          className="flex items-center space-x-2 bg-white/50 p-3 rounded-lg hover:bg-white/70 transition-colors"
+                        >
+                          <Checkbox
+                            id={status.id}
+                            checked={
+                              formData.extraInformation.legalAuthorization[status.id as keyof typeof formData.extraInformation.legalAuthorization]
+                            }
+                            onCheckedChange={(checked) =>
+                              onFormDataChange({
+                                ...formData,
+                                extraInformation: {
+                                  ...formData.extraInformation,
+                                  legalAuthorization: {
+                                    ...formData.extraInformation.legalAuthorization,
+                                    [status.id]: checked,
+                                  },
+                                },
+                              })
+                            }
+                          />
+                          <Label htmlFor={status.id} className="cursor-pointer">
+                            {status.label}
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Work Preferences Section */}
+              <div className="bg-white/30 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
+                <div className="flex items-center gap-2 text-lg font-semibold text-navy">
+                  <Building2 className="h-5 w-5" />
+                  <h3>Work Preferences</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Work Model</h4>
+                    {[
+                      { id: "remoteWork", label: "Remote Work" },
+                      { id: "inPersonWork", label: "In-Person Work" },
+                      { id: "openToRelocation", label: "Open to Relocation" },
+                    ].map((pref) => (
+                      <div
+                        key={pref.id}
+                        className="flex items-center space-x-2 bg-white/50 p-3 rounded-lg hover:bg-white/70 transition-colors"
+                      >
+                        <Checkbox
+                          id={pref.id}
+                          checked={formData.extraInformation.workPreferences[pref.id as keyof typeof formData.extraInformation.workPreferences]}
+                          onCheckedChange={(checked) =>
+                            onFormDataChange({
+                              ...formData,
+                              extraInformation: {
+                                ...formData.extraInformation,
+                                workPreferences: {
+                                  ...formData.extraInformation.workPreferences,
+                                  [pref.id]: checked,
+                                },
+                              },
+                            })
+                          }
+                        />
+                        <Label htmlFor={pref.id} className="cursor-pointer">
+                          {pref.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Additional Requirements</h4>
+                    {[
+                      { id: "willingToCompleteAssessments", label: "Willing to Complete Assessments" },
+                      { id: "willingToUndergoDrugTests", label: "Willing to Undergo Drug Tests" },
+                      { id: "willingToUndergoBackgroundChecks", label: "Willing to Undergo Background Checks" },
+                    ].map((req) => (
+                      <div
+                        key={req.id}
+                        className="flex items-center space-x-2 bg-white/50 p-3 rounded-lg hover:bg-white/70 transition-colors"
+                      >
+                        <Checkbox
+                          id={req.id}
+                          checked={formData.extraInformation.workPreferences[req.id as keyof typeof formData.extraInformation.workPreferences]}
+                          onCheckedChange={(checked) =>
+                            onFormDataChange({
+                              ...formData,
+                              extraInformation: {
+                                ...formData.extraInformation,
+                                workPreferences: {
+                                  ...formData.extraInformation.workPreferences,
+                                  [req.id]: checked,
+                                },
+                              },
+                            })
+                          }
+                        />
+                        <Label htmlFor={req.id} className="cursor-pointer">
+                          {req.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Details Section */}
+              <div className="bg-white/30 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
+                <div className="flex items-center gap-2 text-lg font-semibold text-navy">
+                  <FileCheck className="h-5 w-5" />
                   <h3>Additional Details</h3>
                 </div>
                 <div className="space-y-4">
                   <Label>Tell us more about yourself</Label>
                   <Textarea
                     placeholder="Share additional details about your skills, experience, or anything else you'd like us to know..."
-                    value={formData.extraUserDetails}
-                    onChange={(e) => onFormDataChange({ ...formData, extraUserDetails: e.target.value })}
+                    value={formData.extraInformation.extraDetails}
+                    onChange={(e) =>
+                      onFormDataChange({
+                        ...formData,
+                        extraInformation: {
+                          ...formData.extraInformation,
+                          extraDetails: e.target.value,
+                        },
+                      })
+                    }
                     className="min-h-[150px]"
                   />
                 </div>
@@ -326,12 +357,6 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                 <h3 className="text-sm font-medium text-gray-500">Resume</h3>
                 <p className="text-navy">{formData.resume?.name}</p>
               </div>
-              {formData.withExtraUserDetails && (
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-gray-500">Additional Details</h3>
-                  <p className="text-navy whitespace-pre-wrap">{formData.extraUserDetails}</p>
-                </div>
-              )}
               {resumeData && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
@@ -348,41 +373,45 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
                   </div>
                 </div>
               )}
-              {formData.candidateInfo && (
+              {formData.extraInformation && (
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium text-navy">Additional Information</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-gray-500">Visa Status</h4>
-                      <ul className="list-disc list-inside text-navy">
-                        {formData.candidateInfo.visaStatus.europe && <li>Valid Visa for Europe</li>}
-                        {formData.candidateInfo.visaStatus.usa && <li>Valid Visa for USA</li>}
-                      </ul>
-                    </div>
-                    <div className="space-y-2">
                       <h4 className="text-sm font-medium text-gray-500">Notice Period</h4>
-                      <p className="text-navy">{formData.candidateInfo.noticePeriod}</p>
+                      <p className="text-navy">{formData.extraInformation.noticePeriod}</p>
                     </div>
                     <div className="space-y-2">
                       <h4 className="text-sm font-medium text-gray-500">Salary Expectation</h4>
-                      <p className="text-navy">{formData.candidateInfo.salaryExpectation}</p>
+                      <p className="text-navy">{formData.extraInformation.salaryExpectations.salaryRangeUsd}</p>
                     </div>
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-gray-500">Work Preference</h4>
-                      <p className="text-navy capitalize">{formData.candidateInfo.workPreference}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-gray-500">Employment Status</h4>
-                      <p className="text-navy capitalize">{formData.candidateInfo.currentEmploymentStatus}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-gray-500">Additional Details</h4>
+                      <h4 className="text-sm font-medium text-gray-500">Work Authorization</h4>
                       <ul className="list-disc list-inside text-navy">
-                        {formData.candidateInfo.availableToTravel && <li>Available to Travel</li>}
-                        {formData.candidateInfo.willingToRelocate && <li>Willing to Relocate</li>}
+                        {Object.entries(formData.extraInformation.legalAuthorization)
+                          .filter(([, value]) => value)
+                          .map(([key]) => (
+                            <li key={key}>{key.split(/(?=[A-Z])/).join(" ")}</li>
+                          ))}
+                      </ul>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium text-gray-500">Work Preferences</h4>
+                      <ul className="list-disc list-inside text-navy">
+                        {Object.entries(formData.extraInformation.workPreferences)
+                          .filter(([, value]) => value)
+                          .map(([key]) => (
+                            <li key={key}>{key.split(/(?=[A-Z])/).join(" ")}</li>
+                          ))}
                       </ul>
                     </div>
                   </div>
+                  {formData.extraInformation.extraDetails && (
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium text-gray-500">Additional Details</h4>
+                      <p className="text-navy whitespace-pre-wrap">{formData.extraInformation.extraDetails}</p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

@@ -1,8 +1,9 @@
+
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { WizardNavigation } from "@/components/wizard/WizardNavigation";
 import { WizardSteps } from "@/components/wizard/WizardSteps";
-import { ResumeData } from "@/types/resume";
+import { ExtraInformation, ResumeData } from "@/types/resume";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -11,22 +12,39 @@ const Index = () => {
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
-    candidateInfo: {
-      visaStatus: {
-        europe: false,
-        usa: false,
-      },
+    extraInformation: {
+      extraDetails: "",
       noticePeriod: "",
-      salaryExpectation: "",
-      gender: "prefer_not_to_say" as const,
-      workPreference: "onsite" as const,
-      availableToTravel: false,
-      willingToRelocate: false,
-      currentEmploymentStatus: "employed" as const,
-      languages: [], // Added the missing languages property as an empty array
-    },
-    withExtraUserDetails: true,
-    extraUserDetails: "",
+      salaryExpectations: {
+        salaryRangeUsd: "",
+      },
+      legalAuthorization: {
+        euWorkAuthorization: false,
+        usWorkAuthorization: false,
+        canadaWorkAuthorization: false,
+        ukWorkAuthorization: false,
+        requiresUsVisa: false,
+        requiresUsSponsorship: false,
+        requiresEuVisa: false,
+        requiresEuSponsorship: false,
+        requiresCanadaVisa: false,
+        requiresCanadaSponsorship: false,
+        requiresUkVisa: false,
+        requiresUkSponsorship: false,
+        legallyAllowedToWorkInEu: false,
+        legallyAllowedToWorkInUs: false,
+        legallyAllowedToWorkInCanada: false,
+        legallyAllowedToWorkInUk: false,
+      },
+      workPreferences: {
+        remoteWork: false,
+        inPersonWork: false,
+        openToRelocation: false,
+        willingToCompleteAssessments: false,
+        willingToUndergoDrugTests: false,
+        willingToUndergoBackgroundChecks: false,
+      },
+    } as ExtraInformation,
   });
   const [resumeData, setResumeData] = useState<ResumeData | null>(null);
   const { toast } = useToast();
@@ -73,7 +91,10 @@ const Index = () => {
       });
       return;
     }
-    if (currentStep === 4 && (!formData.candidateInfo?.noticePeriod || !formData.candidateInfo?.salaryExpectation)) {
+    if (
+      currentStep === 4 &&
+      (!formData.extraInformation?.noticePeriod || !formData.extraInformation?.salaryExpectations.salaryRangeUsd)
+    ) {
       toast({
         title: "Please fill in notice period and salary expectation",
         variant: "destructive",
