@@ -1,4 +1,3 @@
-
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { WizardNavigation } from "@/components/wizard/WizardNavigation";
@@ -9,6 +8,7 @@ import { useEffect, useState } from "react";
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isFirstTime, setIsFirstTime] = useState(true);
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
@@ -51,10 +51,25 @@ const Index = () => {
 
   useEffect(() => {
     const savedResumeData = localStorage.getItem("resumeData");
+    const hasCompletedFirstTime = localStorage.getItem("hasCompletedFirstTime");
+    
     if (savedResumeData) {
       setResumeData(JSON.parse(savedResumeData));
     }
-  }, []);
+    
+    if (hasCompletedFirstTime) {
+      setIsFirstTime(false);
+    }
+
+    // Show the welcome toast for first-time users
+    if (!hasCompletedFirstTime) {
+      toast({
+        title: "🎉 Welcome to AI Job Applier!",
+        description: "Don't worry about filling out those boring forms over and over - do it once, and we'll remember everything for your future applications! Let's make job hunting fun! 🚀",
+        duration: 6000,
+      });
+    }
+  }, [toast]);
 
   const isValidUrl = (url: string) => {
     const urlPattern = new RegExp(
@@ -103,6 +118,16 @@ const Index = () => {
     }
     if (currentStep < 5) {
       setCurrentStep((prev) => prev + 1);
+      
+      // If this is the first time and we're moving past step 4
+      if (isFirstTime && currentStep === 4) {
+        localStorage.setItem("hasCompletedFirstTime", "true");
+        setIsFirstTime(false);
+        toast({
+          title: "🎈 Awesome job!",
+          description: "We've saved your info for future applications. Next time, it'll be even faster! Just upload your resume and go! 🏃‍♂️💨",
+        });
+      }
     } else {
       handleSubmit();
     }
@@ -125,6 +150,14 @@ const Index = () => {
   return (
     <div className="max-w-4xl mx-auto pt-4 sm:pt-12 pb-8 sm:pb-24">
       <h1 className="text-2xl sm:text-4xl font-bold text-navy text-center mb-6 sm:mb-12 px-2 sm:px-4">AI Job Application</h1>
+      {isFirstTime && currentStep === 1 && (
+        <div className="mx-2 sm:mx-0 mb-6 p-4 bg-mint/20 rounded-lg border border-mint text-navy animate-fade-in">
+          <p className="text-center">
+            🎯 <span className="font-semibold">Pro tip:</span> Fill out your details once, and we'll remember them forever!
+            Think of it as creating your personal job-hunting superpower! 🦸‍♂️✨
+          </p>
+        </div>
+      )}
       <Card className="p-4 sm:p-8 mx-2 sm:mx-0">
         <AnimatePresence mode="wait">
           <WizardSteps
