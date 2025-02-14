@@ -1,3 +1,4 @@
+
 export interface ResumeData {
   personalInfo: {
     fullName: string;
@@ -14,7 +15,7 @@ export interface ResumeData {
   experience: Experience[];
   education: Education[];
   skills: string[];
-  languages?: Language[];
+  languages: Language[];
   certifications?: Certification[];
   projects?: Project[];
 }
@@ -68,4 +69,44 @@ export interface AdditionalCandidateInfo {
   preferredLocations?: string[];
   languages: string[];
   currentEmploymentStatus: "employed" | "unemployed" | "freelancer" | "student";
+}
+
+export interface ExtraInformation {
+  extraDetails?: string;
+  noticePeriod: string;
+  salaryExpectations: {
+    salaryRangeUsd: string;
+  };
+  legalAuthorization: LegalAuthorization;
+  workPreferences: WorkPreferences;
+}
+
+interface LegalAuthorization {
+  euWorkAuthorization: boolean;
+  usWorkAuthorization: boolean;
+  canadaWorkAuthorization: boolean;
+  ukWorkAuthorization: boolean;
+
+  requiresUsVisa: boolean;
+  requiresUsSponsorship: boolean;
+  requiresEuVisa: boolean;
+  requiresEuSponsorship: boolean;
+  requiresCanadaVisa: boolean;
+  requiresCanadaSponsorship: boolean;
+  requiresUkVisa: boolean;
+  requiresUkSponsorship: boolean;
+
+  legallyAllowedToWorkInEu: boolean;
+  legallyAllowedToWorkInUs: boolean;
+  legallyAllowedToWorkInCanada: boolean;
+  legallyAllowedToWorkInUk: boolean;
+}
+
+interface WorkPreferences {
+  remoteWork: boolean;
+  inPersonWork: boolean;
+  openToRelocation: boolean;
+  willingToCompleteAssessments: boolean;
+  willingToUndergoDrugTests: boolean;
+  willingToUndergoBackgroundChecks: boolean;
 }
