@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { WizardNavigation } from "@/components/wizard/WizardNavigation";
@@ -70,6 +71,11 @@ const Index = () => {
       });
     }
   }, [toast]);
+
+  // Add effect to scroll to top when step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep]);
 
   const isValidUrl = (url: string) => {
     const urlPattern = new RegExp(
