@@ -1,16 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Briefcase, Building2, GraduationCap, Plus, Trash2, User } from "lucide-react";
-
 import { ResumeData } from "@/types/resume";
-import { PersonalInfoSection } from "./resume-sections/PersonalInfoSection";
-import { ProfessionalSummarySection } from "./resume-sections/ProfessionalSummarySection";
 import { EducationSection } from "./resume-sections/EducationSection";
 import { ExperienceSection } from "./resume-sections/ExperienceSection";
 import { LanguagesSection } from "./resume-sections/LanguagesSection";
+import { PersonalInfoSection } from "./resume-sections/PersonalInfoSection";
+import { ProfessionalSummarySection } from "./resume-sections/ProfessionalSummarySection";
 import { SkillsSection } from "./resume-sections/SkillsSection";
 
 interface ResumeFormProps {
