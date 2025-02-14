@@ -1,3 +1,9 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Briefcase, Building2, GraduationCap, Plus, Trash2, User } from "lucide-react";
 
 import { ResumeData } from "@/types/resume";
 import { PersonalInfoSection } from "./resume-sections/PersonalInfoSection";
@@ -143,42 +149,17 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
 
   return (
     <div className="space-y-6 mt-8">
-      <PersonalInfoSection 
-        personalInfo={resumeData.personalInfo} 
-        onUpdate={updatePersonalInfo} 
-      />
-      
-      <ProfessionalSummarySection 
-        summary={resumeData.summary} 
-        onUpdate={(summary) => onChange({ ...resumeData, summary })} 
-      />
-      
-      <EducationSection 
-        education={resumeData.education}
-        onAdd={addEducation}
-        onUpdate={updateEducation}
-        onRemove={removeEducation}
-      />
-      
-      <ExperienceSection 
-        experience={resumeData.experience}
-        onAdd={addExperience}
-        onUpdate={updateExperience}
-        onRemove={removeExperience}
-      />
-      
-      <LanguagesSection 
-        languages={resumeData.languages || []}
-        onAdd={addLanguage}
-        onUpdate={updateLanguage}
-        onRemove={removeLanguage}
-      />
-      
-      <SkillsSection 
-        skills={resumeData.skills}
-        onAdd={addSkill}
-        onRemove={removeSkill}
-      />
+      <PersonalInfoSection personalInfo={resumeData.personalInfo} onUpdate={updatePersonalInfo} />
+
+      <ProfessionalSummarySection summary={resumeData.summary} onUpdate={(summary) => onChange({ ...resumeData, summary })} />
+
+      <EducationSection education={resumeData.education} onAdd={addEducation} onUpdate={updateEducation} onRemove={removeEducation} />
+
+      <ExperienceSection experience={resumeData.experience} onAdd={addExperience} onUpdate={updateExperience} onRemove={removeExperience} />
+
+      <LanguagesSection languages={resumeData.languages || []} onAdd={addLanguage} onUpdate={updateLanguage} onRemove={removeLanguage} />
+
+      <SkillsSection skills={resumeData.skills} onAdd={addSkill} onRemove={removeSkill} />
     </div>
   );
 };
