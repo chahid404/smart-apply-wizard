@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { WizardLayout } from "@/components/wizard/WizardLayout";
 import { ExtraInformation } from "@/types/resume";
-import { BadgeCheck, Briefcase, Building2, FileCheck, Globe2 } from "lucide-react";
+import { Briefcase, Building2, FileCheck, Globe2 } from "lucide-react";
 
 interface AdditionalInfoStepProps {
   extraInformation: ExtraInformation;
@@ -27,6 +27,7 @@ export const AdditionalInfoStep = ({ extraInformation, onExtraInformationChange 
               <Input
                 id="noticePeriod"
                 placeholder="e.g., 2 months"
+                className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
                 value={extraInformation.noticePeriod}
                 onChange={(e) =>
                   onExtraInformationChange({
@@ -41,6 +42,7 @@ export const AdditionalInfoStep = ({ extraInformation, onExtraInformationChange 
               <Input
                 id="salaryRangeUsd"
                 placeholder="e.g., $80,000 - $100,000"
+                className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
                 value={extraInformation.salaryExpectations.salaryRangeUsd}
                 onChange={(e) =>
                   onExtraInformationChange({
@@ -235,6 +237,7 @@ export const AdditionalInfoStep = ({ extraInformation, onExtraInformationChange 
             <Label>Tell us more about yourself</Label>
             <Textarea
               placeholder="Share additional details about your skills, experience, or anything else you'd like us to know..."
+              className="min-h-[150px] bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
               value={extraInformation.extraDetails}
               onChange={(e) =>
                 onExtraInformationChange({
@@ -242,7 +245,6 @@ export const AdditionalInfoStep = ({ extraInformation, onExtraInformationChange 
                   extraDetails: e.target.value,
                 })
               }
-              className="min-h-[150px]"
             />
           </div>
         </div>
