@@ -1,4 +1,3 @@
-
 import { WizardLayout } from "@/components/wizard/WizardLayout";
 import { ExtraInformation, ResumeData } from "@/types/resume";
 
@@ -11,11 +10,19 @@ interface ReviewStepProps {
 
 export const ReviewStep = ({ jobUrl, resume, resumeData, extraInformation }: ReviewStepProps) => {
   return (
+    //TODO change this page to be more user friendly and meaningful
     <WizardLayout title="Review Application" currentStep={5} totalSteps={5}>
       <div className="space-y-6">
         <div className="space-y-2 py-4">
           <h3 className="text-sm font-medium text-gray-500">Job URL</h3>
-          <p className="text-navy">{jobUrl}</p>
+          <a
+            href={jobUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-navy hover:underline transition-colors duration-200 hover:text-mint"
+          >
+            {jobUrl}
+          </a>
         </div>
         <div className="space-y-2">
           <h3 className="text-sm font-medium text-gray-500">Resume</h3>

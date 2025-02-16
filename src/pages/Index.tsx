@@ -6,15 +6,128 @@ import { WizardSteps } from "@/components/wizard/WizardSteps";
 import { ExtraInformation, ResumeData } from "@/types/resume";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+
+enum FieldType {
+  STRING = "string",
+  EMAIL = "email",
+  URL = "url",
+  FILE = "file",
+  NUMBER = "number",
+  ADDRESS = "address",
+  OBJECT = "object",
+}
 interface ValidationResult {
   isValid: boolean;
   message?: string;
 }
 
-interface StepValidation {
-  fields: string[];
-  validate: (formData: any) => ValidationResult;
+interface FieldValidation {
+  field: string; // Dot notation path, e.g., "savedResumeData.personalInfo.email"
+  required?: boolean;
+  type?: FieldType;
+  customValidate?: (value: any, formData?: any) => boolean;
+  message?: string;
 }
+
+interface StepValidation {
+  validations: FieldValidation[];
+}
+
+// Helper to get nested value from an object given a dot-separated path
+const getNestedValue = (obj: any, path: string): any => {
+  return path.split(".").reduce((o, key) => (o ? o[key] : undefined), obj);
+};
+
+// Field validator that checks required, type, and custom validations
+const validateField = (formData: any, fieldValidation: FieldValidation): ValidationResult => {
+  const value = getNestedValue(formData, fieldValidation.field);
+
+  // Required check
+  if (fieldValidation.required && (value === null || value === undefined || value === "")) {
+    return { isValid: false, message: fieldValidation.message || `${fieldValidation.field} is required.` };
+  }
+
+  // Only continue if value exists (or not required)
+  if (value !== null && value !== undefined && value !== "") {
+    if (fieldValidation.type === FieldType.STRING) {
+      if (typeof value !== "string" || value.trim() === "") {
+        return { isValid: false, message: fieldValidation.message || `${fieldValidation.field} must be a valid string.` };
+      }
+    }
+
+    if (fieldValidation.type === FieldType.EMAIL) {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (typeof value !== "string" || !emailPattern.test(value)) {
+        return { isValid: false, message: fieldValidation.message || "Please enter a valid email address." };
+      }
+    }
+
+    if (fieldValidation.type === FieldType.URL) {
+      const urlPattern = new RegExp(
+        "^(https?:\\/\\/)?" + // Optional protocol
+          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // Domain name
+          "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR IP address
+          "(\\:\\d+)?(\\/[-a-z\\d_.@:%+~#?&/=]*)?" + // Path with expanded character set
+          "(\\?[;&a-z\\d_.@:%+~#?&/=]*)?" + // Query string
+          "(\\#[-a-z\\d_]*)?$", // Fragment identifier
+        "i"
+      );
+      if (typeof value !== "string" || !urlPattern.test(value)) {
+        console.log("urlPattern.test(value)", urlPattern.test(value));
+
+        return { isValid: false, message: fieldValidation.message || "Please enter a valid URL." };
+      }
+    }
+
+    if (fieldValidation.type === FieldType.FILE) {
+      if (!(value instanceof File)) {
+        return { isValid: false, message: fieldValidation.message || "Please upload a valid file." };
+      }
+    }
+
+    if (fieldValidation.type === FieldType.NUMBER) {
+      if (typeof value !== "number" || isNaN(value) || value < 0) {
+        return { isValid: false, message: fieldValidation.message || `${fieldValidation.field} must be a positive number.` };
+      }
+    }
+
+    if (fieldValidation.type === FieldType.ADDRESS) {
+      if (typeof value !== "object" || !value) {
+        return { isValid: false, message: fieldValidation.message || `Invalid value for ${fieldValidation.field}.` };
+      }
+
+      if (value.streetAddress.trim() === "") {
+        return { isValid: false, message: "Street address is required." };
+      }
+
+      if (value.city.trim() === "") {
+        return { isValid: false, message: "City is required." };
+      }
+
+      if (value.state.trim() === "") {
+        return { isValid: false, message: "State is required." };
+      }
+
+      if (value.zipCode.trim() === "") {
+        return { isValid: false, message: "Zip code is required." };
+      }
+
+      if (value.country.trim() === "") {
+        return { isValid: false, message: "Country is required." };
+      }
+
+      if (fieldValidation.customValidate && !fieldValidation.customValidate(value, formData)) {
+        return { isValid: false, message: fieldValidation.message || `Invalid value for ${fieldValidation.field}.` };
+      }
+    }
+    // Custom validation if provided
+    if (fieldValidation.customValidate && !fieldValidation.customValidate(value, formData)) {
+      return { isValid: false, message: fieldValidation.message || `Invalid value for ${fieldValidation.field}.` };
+    }
+  }
+
+  return { isValid: true };
+};
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -81,60 +194,120 @@ const Index = () => {
     }));
   }, [resumeData]);
 
-  // Add effect to scroll to top when step changes
+  // Scroll to top when step changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
 
-  const isValidUrl = (url: string) => {
-    const urlPattern = new RegExp(
-      "^(https?:\\/\\/)?" +
-        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
-        "((\\d{1,3}\\.){3}\\d{1,3}))" +
-        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
-        "(\\?[;&a-z\\d%_.~+=-]*)?" +
-        "(\\#[-a-z\\d_]*)?$",
-      "i"
-    );
-    return !!urlPattern.test(url);
-  };
-
+  // Updated validations for each step with per-field rules
   const stepValidations: Record<number, StepValidation> = {
     1: {
-      fields: ["jobUrl"],
-      validate: (formData) => ({
-        isValid: formData.jobUrl && isValidUrl(formData.jobUrl),
-        message: "Please enter a valid job URL",
-      }),
+      validations: [
+        {
+          field: "jobUrl",
+          required: true,
+          type: FieldType.URL,
+          message: "Please enter a valid job URL.",
+        },
+      ],
     },
     2: {
-      fields: ["resume"],
-      validate: (formData) => ({
-        isValid: !!formData.resume,
-        message: "Please upload your resume",
-      }),
+      validations: [
+        {
+          field: "resume",
+          required: true,
+          type: FieldType.FILE,
+          message: "Please upload your resume.",
+        },
+      ],
     },
     3: {
-      fields: ["personalInfo.fullName", "personalInfo.email"],
-      validate: (formData) => ({
-        isValid: formData.resumeData?.personalInfo.fullName && formData.resumeData?.personalInfo.email,
-        message: "Please fill in all required fields",
-      }),
+      validations: [
+        {
+          field: "savedResumeData.personalInfo.firstName",
+          required: true,
+          type: FieldType.STRING,
+          message: "Please enter your first name.",
+        },
+        {
+          field: "savedResumeData.personalInfo.lastName",
+          required: true,
+          type: FieldType.STRING,
+          message: "Please enter your last name.",
+        },
+        {
+          field: "savedResumeData.personalInfo.email",
+          required: true,
+          type: FieldType.EMAIL,
+          message: "Please enter a valid email address.",
+        },
+        {
+          field: "savedResumeData.personalInfo.phoneCode",
+          required: true,
+          type: FieldType.STRING,
+          message: "Please enter your phone code.",
+        },
+        {
+          field: "savedResumeData.personalInfo.phone",
+          type: FieldType.STRING,
+          customValidate: (value: string, _) => /^\d+$/.test(value),
+          message: "Please enter a valid phone number.",
+        },
+        {
+          field: "savedResumeData.personalInfo.gender",
+          required: true,
+          type: FieldType.STRING,
+          message: "Please select your gender.",
+        },
+        {
+          field: "savedResumeData.personalInfo.address",
+          required: true,
+          type: FieldType.ADDRESS,
+          message: "Please enter your complete address.",
+        },
+        {
+          field: "savedResumeData.summary",
+          type: FieldType.STRING,
+          customValidate: (value: string, _) => value.length > 100,
+          message: "Profession summary must be more than 100 characters.",
+        },
+        {
+          field: "savedResumeData.skills",
+          customValidate: (value: string[], _) => value.length >= 3,
+          message: "Please add at least 3 skills.",
+        },
+      ],
     },
     4: {
-      fields: ["extraInformation.noticePeriod", "extraInformation.salaryExpectations.salaryRangeUsd"],
-      validate: (formData) => ({
-        isValid: formData.extraInformation?.noticePeriod && formData.extraInformation?.salaryExpectations.salaryRangeUsd,
-        message: "Please fill in notice period and salary expectation",
-      }),
+      validations: [
+        {
+          field: "extraInformation.noticePeriod",
+          required: true,
+          type: FieldType.STRING,
+          message: "Please fill in your notice period.",
+        },
+        {
+          field: "extraInformation.salaryExpectations.salaryRangeUsd",
+          required: true,
+          type: FieldType.STRING,
+          message: "Please fill in your salary expectation.",
+        },
+      ],
     },
   };
-  // Helper function to validate a step
+
+  // Updated helper to validate a step based on its field validations
   const validateStep = (step: number, formData: any): ValidationResult => {
     const stepValidation = stepValidations[step];
     if (!stepValidation) return { isValid: true };
 
-    return stepValidation.validate(formData);
+    for (const fieldVal of stepValidation.validations) {
+      const result = validateField(formData, fieldVal);
+      if (!result.isValid) {
+        return result;
+      }
+    }
+    return { isValid: true };
   };
 
   // Updated handleNext function

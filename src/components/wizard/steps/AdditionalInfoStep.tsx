@@ -26,7 +26,7 @@ export const AdditionalInfoStep = ({ extraInformation, onExtraInformationChange 
               <Label htmlFor="noticePeriod">Notice Period</Label>
               <Input
                 id="noticePeriod"
-                placeholder="e.g., 2 months"
+                placeholder="e.g., 15 days"
                 className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
                 value={extraInformation.noticePeriod}
                 onChange={(e) =>
@@ -54,6 +54,28 @@ export const AdditionalInfoStep = ({ extraInformation, onExtraInformationChange 
                 }
               />
             </div>
+          </div>
+        </div>
+
+        {/* Additional Details Section */}
+        <div className="bg-white/30 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
+          <div className="flex items-center gap-2 text-lg font-semibold text-navy">
+            <FileCheck className="h-5 w-5" />
+            <h3>Additional Details</h3>
+          </div>
+          <div className="space-y-4">
+            <Label>Tell us more about yourself and the job you're applying for</Label>
+            <Textarea
+              placeholder="Share additional details about your skills, experience, or any specific information relevant to the job you want to apply for..."
+              className="min-h-[150px] bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
+              value={extraInformation.extraDetails}
+              onChange={(e) =>
+                onExtraInformationChange({
+                  ...extraInformation,
+                  extraDetails: e.target.value,
+                })
+              }
+            />
           </div>
         </div>
 
@@ -224,28 +246,6 @@ export const AdditionalInfoStep = ({ extraInformation, onExtraInformationChange 
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Additional Details Section */}
-        <div className="bg-white/30 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
-          <div className="flex items-center gap-2 text-lg font-semibold text-navy">
-            <FileCheck className="h-5 w-5" />
-            <h3>Additional Details</h3>
-          </div>
-          <div className="space-y-4">
-            <Label>Tell us more about yourself</Label>
-            <Textarea
-              placeholder="Share additional details about your skills, experience, or anything else you'd like us to know..."
-              className="min-h-[150px] bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
-              value={extraInformation.extraDetails}
-              onChange={(e) =>
-                onExtraInformationChange({
-                  ...extraInformation,
-                  extraDetails: e.target.value,
-                })
-              }
-            />
           </div>
         </div>
       </div>

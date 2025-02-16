@@ -11,13 +11,7 @@ export interface ResumeData {
     github?: string;
     portfolio?: string;
     website?: string;
-    address: {
-      streetAddress: string;
-      city: string;
-      state: string;
-      zipCode: string;
-      country: string;
-    };
+    address: Address;
     gender?: "male" | "female" | "other";
   };
   summary: string;
@@ -27,6 +21,14 @@ export interface ResumeData {
   languages: Language[];
   certifications?: Certification[];
   projects?: Project[];
+}
+
+export interface Address {
+  streetAddress: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
 }
 
 interface Experience {

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { ResumeData } from "@/types/resume";
 import { EducationSection } from "./resume-sections/EducationSection";
 import { ExperienceSection } from "./resume-sections/ExperienceSection";

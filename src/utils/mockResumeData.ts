@@ -14,9 +14,11 @@ export const generateMockResumeData = (): ResumeData => ({
       country: "USA",
     },
     email: "alex.johnson@example.com",
-    phone: "(555) 123-4567",
+    phone: "5551234567",
+    phoneCode: "1",
     linkedIn: "linkedin.com/in/alexjohnson",
     website: "alexjohnson.com",
+    gender: "male",
   },
   summary:
     "Experienced software engineer with a strong background in full-stack development and cloud technologies. Passionate about creating efficient, scalable solutions and mentoring junior developers.",
