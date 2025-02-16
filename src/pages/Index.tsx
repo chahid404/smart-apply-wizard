@@ -92,7 +92,6 @@ const Index = () => {
 
     if (currentStep < 5) {
       setCurrentStep((prev) => prev + 1);
-
       if (isFirstTime && currentStep === 4) {
         localStorage.setItem("hasCompletedFirstTime", "true");
         setIsFirstTime(false);

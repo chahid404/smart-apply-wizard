@@ -10,7 +10,6 @@ interface ReviewStepProps {
 
 export const ReviewStep = ({ jobUrl, resume, resumeData, extraInformation }: ReviewStepProps) => {
   return (
-    //TODO change this page to be more user friendly and meaningful
     <WizardLayout title="Review Application" currentStep={5} totalSteps={5}>
       <div className="space-y-6">
         <div className="space-y-2 py-4">
