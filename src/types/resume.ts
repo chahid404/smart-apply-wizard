@@ -1,15 +1,24 @@
-
 export interface ResumeData {
   personalInfo: {
     fullName: string;
     firstName: string;
     lastName: string;
     role: string;
-    address: string;
     email: string;
     phone: string;
+    phoneCode?: string;
     linkedIn: string;
+    github?: string;
+    portfolio?: string;
     website?: string;
+    address: {
+      streetAddress: string;
+      city: string;
+      state: string;
+      zipCode: string;
+      country: string;
+    };
+    gender?: "male" | "female" | "other";
   };
   summary: string;
   experience: Experience[];

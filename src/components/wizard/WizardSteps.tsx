@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { JobUrlStep } from "@/components/wizard/steps/JobUrlStep";
 import { ResumeStep } from "@/components/wizard/steps/ResumeStep";
@@ -23,12 +24,7 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return (
-          <JobUrlStep
-            jobUrl={formData.jobUrl}
-            onJobUrlChange={(jobUrl) => onFormDataChange({ ...formData, jobUrl })}
-          />
-        );
+        return <JobUrlStep jobUrl={formData.jobUrl} onJobUrlChange={(jobUrl) => onFormDataChange({ ...formData, jobUrl })} />;
       case 2:
         return (
           <ResumeStep
@@ -52,14 +48,7 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
           />
         );
       case 5:
-        return (
-          <ReviewStep
-            jobUrl={formData.jobUrl}
-            resume={formData.resume}
-            resumeData={resumeData}
-            extraInformation={formData.extraInformation}
-          />
-        );
+        return <ReviewStep jobUrl={formData.jobUrl} resume={formData.resume} resumeData={resumeData} extraInformation={formData.extraInformation} />;
       default:
         return null;
     }

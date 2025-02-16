@@ -5,6 +5,7 @@ import { LanguagesSection } from "./resume-sections/LanguagesSection";
 import { PersonalInfoSection } from "./resume-sections/PersonalInfoSection";
 import { ProfessionalSummarySection } from "./resume-sections/ProfessionalSummarySection";
 import { SkillsSection } from "./resume-sections/SkillsSection";
+import { SocialMediaSection } from "./resume-sections/SocialMediaSection";
 
 interface ResumeFormProps {
   resumeData: ResumeData;
@@ -143,6 +144,8 @@ export const ResumeForm = ({ resumeData, onChange }: ResumeFormProps) => {
   return (
     <div className="space-y-6 mt-8">
       <PersonalInfoSection personalInfo={resumeData.personalInfo} onUpdate={updatePersonalInfo} />
+
+      <SocialMediaSection personalInfo={resumeData.personalInfo} onUpdate={updatePersonalInfo} />
 
       <ProfessionalSummarySection summary={resumeData.summary} onUpdate={(summary) => onChange({ ...resumeData, summary })} />
 

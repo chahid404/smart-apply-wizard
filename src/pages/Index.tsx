@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { WizardNavigation } from "@/components/wizard/WizardNavigation";
@@ -5,6 +6,15 @@ import { WizardSteps } from "@/components/wizard/WizardSteps";
 import { ExtraInformation, ResumeData } from "@/types/resume";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+interface ValidationResult {
+  isValid: boolean;
+  message?: string;
+}
+
+interface StepValidation {
+  fields: string[];
+  validate: (formData: any) => ValidationResult;
+}
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -12,6 +22,7 @@ const Index = () => {
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
+    savedResumeData: null as ResumeData | null,
     extraInformation: {
       extraDetails: "",
       noticePeriod: "",
@@ -62,6 +73,14 @@ const Index = () => {
     }
   }, [toast]);
 
+  // Update saved resume data when resume data changes
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      savedResumeData: resumeData,
+    }));
+  }, [resumeData]);
+
   // Add effect to scroll to top when step changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -80,39 +99,59 @@ const Index = () => {
     return !!urlPattern.test(url);
   };
 
+  const stepValidations: Record<number, StepValidation> = {
+    1: {
+      fields: ["jobUrl"],
+      validate: (formData) => ({
+        isValid: formData.jobUrl && isValidUrl(formData.jobUrl),
+        message: "Please enter a valid job URL",
+      }),
+    },
+    2: {
+      fields: ["resume"],
+      validate: (formData) => ({
+        isValid: !!formData.resume,
+        message: "Please upload your resume",
+      }),
+    },
+    3: {
+      fields: ["personalInfo.fullName", "personalInfo.email"],
+      validate: (formData) => ({
+        isValid: formData.resumeData?.personalInfo.fullName && formData.resumeData?.personalInfo.email,
+        message: "Please fill in all required fields",
+      }),
+    },
+    4: {
+      fields: ["extraInformation.noticePeriod", "extraInformation.salaryExpectations.salaryRangeUsd"],
+      validate: (formData) => ({
+        isValid: formData.extraInformation?.noticePeriod && formData.extraInformation?.salaryExpectations.salaryRangeUsd,
+        message: "Please fill in notice period and salary expectation",
+      }),
+    },
+  };
+  // Helper function to validate a step
+  const validateStep = (step: number, formData: any): ValidationResult => {
+    const stepValidation = stepValidations[step];
+    if (!stepValidation) return { isValid: true };
+
+    return stepValidation.validate(formData);
+  };
+
+  // Updated handleNext function
   const handleNext = () => {
-    if (currentStep === 1 && (!formData.jobUrl || !isValidUrl(formData.jobUrl))) {
+    const validation = validateStep(currentStep, formData);
+
+    if (!validation.isValid) {
       toast({
-        title: "Please enter a valid job URL",
+        title: validation.message,
         variant: "destructive",
       });
       return;
     }
-    if (currentStep === 2 && !formData.resume) {
-      toast({
-        title: "Please upload your resume",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (currentStep === 3 && (!resumeData?.personalInfo.fullName || !resumeData?.personalInfo.email)) {
-      toast({
-        title: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (currentStep === 4 && (!formData.extraInformation?.noticePeriod || !formData.extraInformation?.salaryExpectations.salaryRangeUsd)) {
-      toast({
-        title: "Please fill in notice period and salary expectation",
-        variant: "destructive",
-      });
-      return;
-    }
+
     if (currentStep < 5) {
       setCurrentStep((prev) => prev + 1);
 
-      // If this is the first time and we're moving past step 4
       if (isFirstTime && currentStep === 4) {
         localStorage.setItem("hasCompletedFirstTime", "true");
         setIsFirstTime(false);
@@ -140,6 +179,11 @@ const Index = () => {
     });
   };
 
+  const handleResumeDataChange = (data: ResumeData) => {
+    setResumeData(data);
+    localStorage.setItem("resumeData", JSON.stringify(data));
+  };
+
   return (
     <div className="max-w-4xl mx-auto pt-4 sm:pt-12 pb-8 sm:pb-24">
       <h1 className="text-2xl sm:text-4xl font-bold text-navy text-center mb-6 sm:mb-12 px-2 sm:px-4">AI Job Application</h1>
@@ -158,11 +202,8 @@ const Index = () => {
             formData={formData}
             resumeData={resumeData}
             onFormDataChange={setFormData}
-            onResumeDataChange={setResumeData}
-            onResumeDataExtracted={(data) => {
-              setResumeData(data);
-              localStorage.setItem("resumeData", JSON.stringify(data));
-            }}
+            onResumeDataChange={handleResumeDataChange}
+            onResumeDataExtracted={handleResumeDataChange}
           />
         </AnimatePresence>
         <WizardNavigation currentStep={currentStep} onNext={handleNext} onBack={handleBack} />
