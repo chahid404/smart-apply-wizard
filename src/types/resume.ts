@@ -24,11 +24,11 @@ export interface ResumeData {
 }
 
 export interface Address {
-  streetAddress: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
+  streetAddress?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  country?: string;
 }
 
 interface Experience {
@@ -63,23 +63,6 @@ interface Project {
   description: string;
   technologies: string[];
   url?: string;
-}
-
-export interface AdditionalCandidateInfo {
-  visaStatus: {
-    europe: boolean;
-    usa: boolean;
-    other?: string;
-  };
-  noticePeriod: string;
-  salaryExpectation: string;
-  gender: "male" | "female" | "other" | "prefer_not_to_say";
-  workPreference: "remote" | "hybrid" | "onsite";
-  availableToTravel: boolean;
-  willingToRelocate: boolean;
-  preferredLocations?: string[];
-  languages: string[];
-  currentEmploymentStatus: "employed" | "unemployed" | "freelancer" | "student";
 }
 
 export interface ExtraInformation {
