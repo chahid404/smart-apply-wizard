@@ -1,10 +1,10 @@
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { routes } from "@/lib/routes";
+import { useClerk, useUser } from "@clerk/clerk-react";
 import { Coins, Layout, PlusCircle, User } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
-import { useUser, useClerk } from "@clerk/clerk-react";
 
 export const Header = () => {
   const { user } = useUser();
@@ -13,7 +13,7 @@ export const Header = () => {
 
   const handleSignOut = () => {
     signOut(() => {
-      navigate("/");
+      navigate(routes.Home);
     });
   };
 
@@ -33,7 +33,10 @@ export const Header = () => {
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer h-8 w-8 sm:h-10 sm:w-10">
                 <AvatarImage src={user?.imageUrl || ""} alt={user?.fullName || "User"} />
-                <AvatarFallback>{user?.firstName?.charAt(0)}{user?.lastName?.charAt(0) || ""}</AvatarFallback>
+                <AvatarFallback>
+                  {user?.firstName?.charAt(0)}
+                  {user?.lastName?.charAt(0) || ""}
+                </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
@@ -53,12 +56,9 @@ export const Header = () => {
                 <Layout className="h-4 w-4 mr-2 transition-transform group-hover:scale-110" />
                 <span className="transition-colors group-hover:text-navy">Dashboard</span>
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                onClick={handleSignOut}
-                className="transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group cursor-pointer"
-              >
+              <DropdownMenuItem onClick={handleSignOut} className="transition-all duration-200 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group cursor-pointer">
                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform group-hover:scale-110">
-                  <path d="M13.5 7.5L10.5 4.5M13.5 7.5L10.5 10.5M13.5 7.5L4 7.5M8 13.5H1.5V1.5H8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M13.5 7.5L10.5 4.5M13.5 7.5L10.5 10.5M13.5 7.5L4 7.5M8 13.5H1.5V1.5H8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span className="transition-colors group-hover:text-navy">Logout</span>
               </DropdownMenuItem>

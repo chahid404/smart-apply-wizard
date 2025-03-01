@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
+import { routes } from "@/lib/routes";
 import { Edit2, Eye, Filter, Grid, List, PlusCircle, Search, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -66,7 +67,7 @@ const AllApplications = () => {
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-500">{application.platform}</div>
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="icon" onClick={() => navigate(`/application/${application.id}`)} className="hover:text-navy">
+                  <Button variant="ghost" size="icon" onClick={() => navigate(`${routes.Applications}/${application.id}`)} className="hover:text-navy">
                     <Eye className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" className="hover:text-navy">
@@ -83,7 +84,7 @@ const AllApplications = () => {
       ) : (
         <div className="col-span-full flex flex-col items-center justify-center p-8 text-center">
           <div className="text-gray-400 mb-4">No applications yet</div>
-          <Button onClick={() => navigate("/")} className="bg-navy hover:bg-navy-light transition-colors">
+          <Button onClick={() => navigate(routes.Home)} className="bg-navy hover:bg-navy-light transition-colors">
             <PlusCircle className="mr-2 h-4 w-4" />
             Start New Application
           </Button>
@@ -117,7 +118,7 @@ const AllApplications = () => {
               <TableCell>{application.platform}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
-                  <Button variant="ghost" size="icon" onClick={() => navigate(`/application/${application.id}`)} className="hover:text-navy">
+                  <Button variant="ghost" size="icon" onClick={() => navigate(`${routes.Applications}/${application.id}`)} className="hover:text-navy">
                     <Eye className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" className="hover:text-navy">
@@ -143,7 +144,7 @@ const AllApplications = () => {
           <h1 className="text-2xl sm:text-3xl font-bold text-navy">All Applications</h1>
           <p className="text-gray-600 mt-1">Track and manage your job applications</p>
         </div>
-        <Button onClick={() => navigate("/")} className="bg-navy hover:bg-navy-light transition-colors">
+        <Button onClick={() => navigate(routes.Home)} className="bg-navy hover:bg-navy-light transition-colors">
           <PlusCircle className="mr-2 h-4 w-4" />
           New Application
         </Button>

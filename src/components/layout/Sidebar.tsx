@@ -1,25 +1,15 @@
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { routes, routeTitles } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { Coins, FileText, Home, Settings, User } from "lucide-react";
+import { Coins, FileText, Plus, Settings, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const menuItems = [
-  { title: "Dashboard", icon: Home, url: "/dashboard" },
-  { title: "Applications", icon: FileText, url: "/applications" },
-  { title: "Profile", icon: User, url: "/profile" },
-  { title: "Tokens", icon: Coins, url: "/tokens" },
-  { title: "Settings", icon: Settings, url: "/settings" },
+  { title: routeTitles[routes.APPLY_NOW], icon: Plus, url: routes.APPLY_NOW },
+  { title: routeTitles[routes.Applications], icon: FileText, url: routes.Applications },
+  { title: routeTitles[routes.Profile], icon: User, url: routes.Profile },
+  { title: routeTitles[routes.Tokens], icon: Coins, url: routes.Tokens },
+  { title: routeTitles[routes.Settings], icon: Settings, url: routes.Settings },
 ];
 
 export const AppSidebar = () => {
@@ -42,14 +32,7 @@ export const AppSidebar = () => {
                         setOpenMobile(false);
                       }
                     }}
-                    className={cn(
-                      "flex items-center gap-3 p-3",
-                      "transition-all duration-300 ease-out",
-                      "rounded-xl border border-transparent",
-                      "hover:border-mint/20 hover:bg-gradient-to-r hover:from-white hover:to-mint/5",
-                      "text-navy font-medium",
-                      "group relative overflow-hidden"
-                    )}
+                    className={cn("flex items-center gap-3 p-3", "transition-all duration-300 ease-out", "rounded-xl border border-transparent", "hover:border-mint/20 hover:bg-gradient-to-r hover:from-white hover:to-mint/5", "text-navy font-medium", "group relative overflow-hidden")}
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-teal/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                     <div className="relative flex items-center gap-3">

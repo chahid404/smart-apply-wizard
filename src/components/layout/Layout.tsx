@@ -1,9 +1,21 @@
-import { Outlet } from "react-router-dom";
+import { routes } from "@/lib/routes";
+import { useAuth } from "@clerk/clerk-react";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { SidebarProvider } from "../ui/sidebar";
 import { Header } from "./Header";
 import { AppSidebar } from "./Sidebar";
 
 export const Layout = () => {
+  const { userId, isSignedIn } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isSignedIn) {
+      navigate(routes.Home);
+    }
+  }, [userId, isSignedIn, navigate]);
+  
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
