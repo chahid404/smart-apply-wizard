@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -23,6 +24,17 @@ interface PersonalInfoSectionProps {
 }
 
 export const PersonalInfoSection = ({ personalInfo, onUpdate }: PersonalInfoSectionProps) => {
+  // Helper function to ensure address updates maintain all required fields
+  const updateAddress = (field: keyof ResumeData["personalInfo"]["address"], value: string) => {
+    onUpdate("address", {
+      streetAddress: field === "streetAddress" ? value : personalInfo.address.streetAddress || "",
+      city: field === "city" ? value : personalInfo.address.city || "",
+      state: field === "state" ? value : personalInfo.address.state || "",
+      zipCode: field === "zipCode" ? value : personalInfo.address.zipCode || "",
+      country: field === "country" ? value : personalInfo.address.country || "",
+    });
+  };
+
   return (
     <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 space-y-6 border shadow-sm">
       <div className="flex items-center gap-2 text-lg font-semibold text-navy">
@@ -105,13 +117,8 @@ export const PersonalInfoSection = ({ personalInfo, onUpdate }: PersonalInfoSect
             <Label htmlFor="streetAddress">Street Address</Label>
             <Input
               id="streetAddress"
-              value={personalInfo.address.streetAddress}
-              onChange={(e) =>
-                onUpdate("address", {
-                  ...personalInfo.address,
-                  streetAddress: e.target.value,
-                })
-              }
+              value={personalInfo.address.streetAddress || ""}
+              onChange={(e) => updateAddress("streetAddress", e.target.value)}
               className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
             />
           </div>
@@ -119,13 +126,8 @@ export const PersonalInfoSection = ({ personalInfo, onUpdate }: PersonalInfoSect
             <Label htmlFor="city">City</Label>
             <Input
               id="city"
-              value={personalInfo.address.city}
-              onChange={(e) =>
-                onUpdate("address", {
-                  ...personalInfo.address,
-                  city: e.target.value,
-                })
-              }
+              value={personalInfo.address.city || ""}
+              onChange={(e) => updateAddress("city", e.target.value)}
               className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
             />
           </div>
@@ -133,13 +135,8 @@ export const PersonalInfoSection = ({ personalInfo, onUpdate }: PersonalInfoSect
             <Label htmlFor="state">State</Label>
             <Input
               id="state"
-              value={personalInfo.address.state}
-              onChange={(e) =>
-                onUpdate("address", {
-                  ...personalInfo.address,
-                  state: e.target.value,
-                })
-              }
+              value={personalInfo.address.state || ""}
+              onChange={(e) => updateAddress("state", e.target.value)}
               className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
             />
           </div>
@@ -147,13 +144,8 @@ export const PersonalInfoSection = ({ personalInfo, onUpdate }: PersonalInfoSect
             <Label htmlFor="zipCode">Zip Code</Label>
             <Input
               id="zipCode"
-              value={personalInfo.address.zipCode}
-              onChange={(e) =>
-                onUpdate("address", {
-                  ...personalInfo.address,
-                  zipCode: e.target.value,
-                })
-              }
+              value={personalInfo.address.zipCode || ""}
+              onChange={(e) => updateAddress("zipCode", e.target.value)}
               className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
             />
           </div>
@@ -161,13 +153,8 @@ export const PersonalInfoSection = ({ personalInfo, onUpdate }: PersonalInfoSect
             <Label htmlFor="country">Country</Label>
             <Input
               id="country"
-              value={personalInfo.address.country}
-              onChange={(e) =>
-                onUpdate("address", {
-                  ...personalInfo.address,
-                  country: e.target.value,
-                })
-              }
+              value={personalInfo.address.country || ""}
+              onChange={(e) => updateAddress("country", e.target.value)}
               className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors"
             />
           </div>
