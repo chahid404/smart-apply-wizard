@@ -1,3 +1,4 @@
+
 import {
   Sidebar,
   SidebarContent,
@@ -10,15 +11,15 @@ import {
 } from "@/components/ui/sidebar";
 import { routes, routeTitles } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { Coins, FileText, Home, Settings, Users } from "lucide-react";
+import { Coins, FileText, Home, Settings, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const menuItems = [
-  { title: routeTitles[routes.Dashboard], icon: Home, url: routes.Dashboard },
-  { title: routeTitles[routes.Applications], icon: FileText, url: routes.Applications },
-  { title: routeTitles[routes.Profile], icon: Users, url: routes.Profile },
-  { title: routeTitles[routes.Tokens], icon: Coins, url: routes.Tokens },
-  { title: routeTitles[routes.Settings], icon: Settings, url: routes.Settings },
+  { title: "Dashboard", icon: Home, url: "/dashboard" },
+  { title: "Applications", icon: FileText, url: "/applications" },
+  { title: "Profile", icon: User, url: "/profile" },
+  { title: "Tokens", icon: Coins, url: "/tokens" },
+  { title: "Settings", icon: Settings, url: "/settings" },
 ];
 
 export const AppSidebar = () => {

@@ -1,5 +1,6 @@
+
 export enum routes {
-  Dashboard = "/",
+  Dashboard = "/dashboard",
   Applications = "/applications",
   Profile = "/profile",
   Tokens = "/tokens",
