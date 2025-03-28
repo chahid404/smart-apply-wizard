@@ -1,10 +1,9 @@
+import { createRoot } from "react-dom/client";
+import { ClerkProvider } from "@clerk/clerk-react";
+import App from "./App.tsx";
+import "./index.css";
+import { routes } from "./lib/routes.ts";
 
-import { createRoot } from 'react-dom/client';
-import { ClerkProvider } from '@clerk/clerk-react';
-import App from './App.tsx';
-import './index.css';
-
-// Use your Clerk publishable key directly
 const PUBLISHABLE_KEY = "pk_test_aW5mb3JtZWQtdHVydGxlLTcxLmNsZXJrLmFjY291bnRzLmRldiQ";
 
 if (!PUBLISHABLE_KEY) {
@@ -12,7 +11,10 @@ if (!PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+  <ClerkProvider
+    publishableKey={PUBLISHABLE_KEY}
+    afterSignOutUrl={routes.Applications}
+  >
     <App />
   </ClerkProvider>
 );

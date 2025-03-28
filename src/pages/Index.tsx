@@ -3,14 +3,17 @@ import { useToast } from "@/components/ui/use-toast";
 import { WizardNavigation } from "@/components/wizard/WizardNavigation";
 import { WizardSteps } from "@/components/wizard/WizardSteps";
 import { ExtraInformation, ResumeData } from "@/types/resume";
-import { validateStep } from "@/utils/validation";
 import { stepValidations } from "@/utils/stepValidations";
+import { validateStep } from "@/utils/validation";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isFirstTime, setIsFirstTime] = useState(true);
+  const { userId, getToken } = useAuth();
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
@@ -79,7 +82,7 @@ const Index = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     const validation = validateStep(currentStep, formData, stepValidations);
 
     if (!validation.isValid) {
@@ -101,7 +104,7 @@ const Index = () => {
         });
       }
     } else {
-      handleSubmit();
+      await handleSubmit();
     }
   };
 
@@ -111,12 +114,27 @@ const Index = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const token = await getToken();
+
     console.log("Submitting application:", formData);
-    toast({
-      title: "Application submitted successfully!",
-      description: "We'll notify you once it's processed.",
-    });
+    await axios
+      .get("http://localhost:5000/api/v1/users/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "X-User-Id": userId,
+        },
+      })
+      .then((res) => {
+        toast({
+          title: "Application submitted successfully!",
+          description: "We'll notify you once it's processed.",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleResumeDataChange = (data: ResumeData) => {
@@ -130,8 +148,7 @@ const Index = () => {
     return (
       <div className="mx-2 sm:mx-0 mb-6 p-4 bg-mint/20 rounded-lg border border-mint text-navy animate-fade-in">
         <p className="text-center">
-          🎯 <span className="font-semibold">Pro tip:</span> Don't worry about filling out those boring forms over and over - do it once, and we'll
-          remember everything for your future applications! Let's make job hunting fun! 🚀
+          🎯 <span className="font-semibold">Pro tip:</span> Don't worry about filling out those boring forms over and over - do it once, and we'll remember everything for your future applications! Let's make job hunting fun! 🚀
         </p>
       </div>
     );
@@ -145,14 +162,7 @@ const Index = () => {
 
       <Card className="p-4 sm:p-8 mx-2 sm:mx-0">
         <AnimatePresence mode="wait">
-          <WizardSteps
-            currentStep={currentStep}
-            formData={formData}
-            resumeData={resumeData}
-            onFormDataChange={setFormData}
-            onResumeDataChange={handleResumeDataChange}
-            onResumeDataExtracted={handleResumeDataChange}
-          />
+          <WizardSteps currentStep={currentStep} formData={formData} resumeData={resumeData} onFormDataChange={setFormData} onResumeDataChange={handleResumeDataChange} onResumeDataExtracted={handleResumeDataChange} />
         </AnimatePresence>
         <WizardNavigation currentStep={currentStep} onNext={handleNext} onBack={handleBack} />
       </Card>
