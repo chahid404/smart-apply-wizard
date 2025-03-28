@@ -3,12 +3,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { WizardNavigation } from "@/components/wizard/WizardNavigation";
 import { WizardSteps } from "@/components/wizard/WizardSteps";
 import { ExtraInformation, ResumeData } from "@/types/resume";
-import { validateStep } from "@/utils/validation";
 import { stepValidations } from "@/utils/stepValidations";
+import { validateStep } from "@/utils/validation";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useAuth } from "@clerk/clerk-react";
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);

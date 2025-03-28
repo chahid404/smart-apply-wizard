@@ -7,6 +7,7 @@ import { File, ScanSearch, Upload, X } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import StatusAlert from "../ui/StatusAlert";
+import useResumeService from "@/services/resumeService";
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -16,8 +17,9 @@ interface FileUploadProps {
 
 export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }: FileUploadProps) => {
   const [isScanning, setIsScanning] = useState(false);
-  const [scanProgress, setScanProgress] = useState(0);
   const [scanSuccess, setScanSuccess] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { analyzeResume } = useResumeService();
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -25,26 +27,25 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
         const file = acceptedFiles[0];
         onFileSelect(file);
         setIsScanning(true);
-        // Simulate scanning progress
-        let progress = 0;
-        const interval = setInterval(() => {
-          progress += 2;
-          setScanProgress(progress);
-          if (progress >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-              setIsScanning(false);
-              // Generate and save mock data
-              const mockData = generateMockResumeData();
-              localStorage.setItem("resumeData", JSON.stringify(mockData));
-              onResumeDataExtracted(mockData);
-              setScanSuccess(true);
-            }, 500);
-          }
-        }, 50);
+        setIsLoading(true);
+        const formData = new FormData();
+        formData.append("resume", file);
+        analyzeResume(formData)
+          .then((data: any) => {
+            onResumeDataExtracted(data as ResumeData);
+            setScanSuccess(true);
+          })
+          .catch((error) => {
+            console.error("API call failed:", error);
+            setScanSuccess(false);
+          })
+          .finally(() => {
+            setIsScanning(false);
+            setIsLoading(false);
+          });
       }
     },
-    [onFileSelect, onResumeDataExtracted]
+    [onFileSelect, onResumeDataExtracted, analyzeResume]
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -52,13 +53,16 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
       "application/pdf": [".pdf"],
     },
     maxFiles: 1,
+    disabled: isLoading,
   });
+
+  const rootProps = getRootProps();
 
   return (
     <div className="w-full space-y-4">
       {!selectedFile ? (
         <div
-          {...getRootProps()}
+          {...rootProps}
           className={cn(
             "border-2 border-dashed rounded-lg p-8 transition-colors duration-300 cursor-pointer",
             isDragActive ? "border-mint bg-mint/10" : "border-gray-200 hover:border-mint"
@@ -101,18 +105,10 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
             </motion.div>
             <span className="text-sm font-medium text-gray-700">Scanning your resume...</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <motion.div
-              className="bg-navy rounded-full h-2"
-              initial={{ width: "0%" }}
-              animate={{ width: `${scanProgress}%` }}
-              transition={{ duration: 0.1 }}
-            />
-          </div>
           <div className="text-xs text-gray-500 text-center">Analyzing skills, experience, and qualifications...</div>
         </motion.div>
       )}
-      <StatusAlert status={scanSuccess} successMessage="Resume scanned successfully!" errorMessage="Resume scan failed. Please try again." />
+      <StatusAlert status={scanSuccess} successMessage="Resume scanned successfully!" errorMessage="Resume scan failed. Please try again."/>
     </div>
   );
 };
