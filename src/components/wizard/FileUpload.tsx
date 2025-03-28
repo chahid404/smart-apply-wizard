@@ -1,7 +1,7 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from "@/lib/utils";
 import { ResumeData } from "@/types/resume";
-import { generateMockResumeData } from "@/utils/mockResumeData";
 import { motion } from "framer-motion";
 import { File, ScanSearch, Upload, X } from "lucide-react";
 import { useCallback, useState } from "react";
@@ -30,9 +30,10 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
         setIsLoading(true);
         const formData = new FormData();
         formData.append("resume", file);
+        
         analyzeResume(formData)
-          .then((data: any) => {
-            onResumeDataExtracted(data as ResumeData);
+          .then((resumeData) => {
+            onResumeDataExtracted(resumeData);
             setScanSuccess(true);
           })
           .catch((error) => {
@@ -47,6 +48,7 @@ export const FileUpload = ({ onFileSelect, onResumeDataExtracted, selectedFile }
     },
     [onFileSelect, onResumeDataExtracted, analyzeResume]
   );
+  
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {

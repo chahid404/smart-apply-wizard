@@ -1,20 +1,31 @@
+
 // src/api/apiService.js
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api/v1",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1",
 });
 
 export const useApi = () => {
   const { getToken } = useAuth();
 
-  const securedRequest = async (options) => {
+  const securedRequest = async (options: {
+    url: string;
+    method: string;
+    headers?: Record<string, string>;
+    data?: any;
+  }) => {
     const token = await getToken();
-    const headers = {
+    const headers: Record<string, string> = {
       ...options.headers,
       Authorization: `Bearer ${token}`,
     };
+
+    // Don't set Content-Type for FormData to let browser set it with boundary
+    if (!(options.data instanceof FormData)) {
+      headers["Content-Type"] = "application/json";
+    }
 
     try {
       const response = await api({
