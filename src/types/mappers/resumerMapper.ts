@@ -58,3 +58,61 @@ export const mapApiResponseToResumeData = (apiResponse: ApiResume): ResumeData =
     })),
   };
 };
+
+export const mapResumeDataToApiResume = (resumeData: ResumeData): ApiResume => {
+  return {
+    id: null,
+    firstName: resumeData.personalInfo.firstName,
+    lastName: resumeData.personalInfo.lastName,
+    role: resumeData.personalInfo.role,
+    email: resumeData.personalInfo.email,
+    phone: resumeData.personalInfo.phone,
+    phoneCode: resumeData.personalInfo.phoneCode,
+    linkedIn: resumeData.personalInfo.linkedIn,
+    github: resumeData.personalInfo.github,
+    portfolio: resumeData.personalInfo.portfolio,
+    website: resumeData.personalInfo.website,
+    streetAddress: resumeData.personalInfo.address.streetAddress,
+    city: resumeData.personalInfo.address.city,
+    state: resumeData.personalInfo.address.state,
+    zipCode: resumeData.personalInfo.address.zipCode,
+    country: resumeData.personalInfo.address.country,
+    gender: resumeData.personalInfo.gender,
+    summary: resumeData.summary,
+    experiences: resumeData.experience.map((exp) => ({
+      id: null,
+      company: exp.company,
+      position: exp.position,
+      startDate: exp.startDate,
+      endDate: exp.endDate,
+      techStack: exp.techStack,
+      description: exp.description,
+    })),
+    educations: resumeData.education.map((edu) => ({
+      id: null,
+      institution: edu.institution,
+      degree: edu.degree,
+      field: edu.field,
+      graduationDate: edu.graduationDate,
+    })),
+    skills: resumeData.skills,
+    languages: resumeData.languages.map((lang) => ({
+      id: null,
+      name: lang.name,
+      proficiency: lang.proficiency,
+    })),
+    certifications: resumeData.certifications.map((cert) => ({
+      id: null,
+      name: cert.name,
+      issuer: cert.issuer,
+      date: cert.date,
+    })),
+    projects: resumeData.projects.map((proj) => ({
+      id: null,
+      name: proj.name,
+      description: proj.description,
+      technologies: proj.technologies,
+      url: proj.url,
+    })),
+  };
+};

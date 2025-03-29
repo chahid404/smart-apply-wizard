@@ -2,6 +2,10 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { WizardNavigation } from "@/components/wizard/WizardNavigation";
 import { WizardSteps } from "@/components/wizard/WizardSteps";
+import useApplicationService from "@/services/applicationService";
+import useResumeService from "@/services/resumeService";
+import { ApiApplication } from "@/types/api/response/ApplicationResponse";
+import { ApiResumeExtraInfoData } from "@/types/api/response/ResumeExtraInformationResponse";
 import { ExtraInformation, ResumeData } from "@/types/resume";
 import { stepValidations } from "@/utils/stepValidations";
 import { validateStep } from "@/utils/validation";
@@ -11,6 +15,9 @@ import { useEffect, useState } from "react";
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isFirstTime, setIsFirstTime] = useState(true);
+  const { createOrUpdateResume, createExtraResumeDetails } = useResumeService();
+  const { createApplication } = useApplicationService();
+
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
@@ -75,7 +82,6 @@ const Index = () => {
   }, [currentStep]);
 
   const handleNext = async () => {
-    console.log("Form data:", formData);
     const validation = validateStep(currentStep, formData, stepValidations);
 
     if (!validation.isValid) {
@@ -98,7 +104,7 @@ const Index = () => {
         });
       }
     } else {
-      //TODO handle submit (resume, jobUrl, extraInformation) : https://app.itsdart.com/d/BtfCYSAnbFx5/FesSRZOEQQqC-handle-submit-resume-job-url
+      await handleSubmit();
     }
   };
 
@@ -110,7 +116,40 @@ const Index = () => {
 
   const handleResumeDataChange = (data: ResumeData) => {
     setResumeData(data);
-    console.log("Resume data updated:", data);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const resume = await createOrUpdateResume(formData.resumeData);
+
+      const applicationBody = {
+        resumeId: resume.id,
+        userId: resume.userId,
+        applicationUrl: formData.jobUrl,
+        extraDetails: formData.extraInformation.extraDetails,
+        status: "NEW",
+      } as ApiApplication;
+
+      const resumeExtraInformation = {
+        ...formData.extraInformation,
+        resumeId: resume.id,
+        userId: resume.userId,
+      } as ApiResumeExtraInfoData;
+
+      await Promise.all([createApplication(applicationBody), createExtraResumeDetails(resume.id, resumeExtraInformation)]);
+      //TODO - save resumeId to the global variable
+      //TODO - save resume to the database
+      //TODO - save jobUrl to the database
+      //TODO - save extraInformation to the database
+      //TODO - display success message
+      //TODO - create redirect btn to the job application page
+    } catch (_) {
+      toast({
+        title: "Processing failed",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
   };
 
   const renderFirstTimeMessage = () => {
@@ -148,5 +187,5 @@ const Index = () => {
     </div>
   );
 };
-
+//TODO change this file name
 export default Index;

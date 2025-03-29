@@ -14,7 +14,7 @@ const useApplicationService = () => {
     return response;
   };
 
-  const createApplication = async (data: BodyInit | null | undefined): Promise<unknown> => {
+  const createApplication = async (data: unknown): Promise<unknown> => {
     const response = await securedRequest({ url: `/applications`, method: HttpMethod.POST, data });
     return response;
   };

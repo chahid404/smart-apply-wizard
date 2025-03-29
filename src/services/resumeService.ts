@@ -1,11 +1,17 @@
 import { useApi } from "@/api/apiClient";
+import { ApiResumeExtraInfoData } from "@/types/api/response/ResumeExtraInformationResponse";
 import { ApiResume } from "@/types/api/response/resumeResponse";
 import HttpMethod from "@/types/http";
-import { mapApiResponseToResumeData } from "@/types/mappers/resumerMapper";
+import { mapApiResponseToResumeData, mapResumeDataToApiResume } from "@/types/mappers/resumerMapper";
 import { ResumeData } from "../types/resume";
 
 const useResumeService = () => {
   const { securedRequest } = useApi();
+
+const createOrUpdateResume = async (data: ResumeData): Promise<ApiResume> => {
+    const requestBody = mapResumeDataToApiResume(data);
+    return await securedRequest({ url: `/resumes`, method: HttpMethod.POST, data: requestBody });
+  };
 
   const findById = async (id: string): Promise<ResumeData> => {
     const response = await securedRequest({ url: `/resumes/${id}`, method: HttpMethod.GET });
@@ -27,14 +33,14 @@ const useResumeService = () => {
     }
   };
 
-  const createExtraResumeDetails = async (id: string, data: BodyInit): Promise<unknown> => {
+  const createExtraResumeDetails = async (id: string, data: ApiResumeExtraInfoData): Promise<ApiResumeExtraInfoData> => {
     const response = await securedRequest({ url: `/resumes/${id}/extra-details`, method: HttpMethod.POST, data });
     return response;
   };
 
   const findResumeByUserId = async (userId: string): Promise<ResumeData> => {
     const response = await securedRequest({ url: `/resumes/${userId}/resume`, method: HttpMethod.GET });
-    return mapApiResponseToResumeData(response as ApiResume);
+    return mapApiResponseToResumeData(response);
   };
 
   return {
@@ -43,6 +49,7 @@ const useResumeService = () => {
     analyzeResume,
     createExtraResumeDetails,
     findResumeByUserId,
+    createOrUpdateResume,
   };
 };
 

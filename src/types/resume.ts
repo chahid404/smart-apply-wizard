@@ -12,7 +12,7 @@ export interface ResumeData {
     portfolio?: string;
     website?: string;
     address: Address;
-    gender?: "male" | "female" | "other";
+    gender?: "male" | "female";
   };
   summary: string;
   experience: Experience[];
