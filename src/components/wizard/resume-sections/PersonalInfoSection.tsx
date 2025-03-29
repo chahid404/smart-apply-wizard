@@ -1,4 +1,3 @@
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -96,9 +95,9 @@ export const PersonalInfoSection = ({ personalInfo, onUpdate }: PersonalInfoSect
           </div>
           <div className="space-y-2">
             <Label htmlFor="gender">Gender</Label>
-            <Select onValueChange={(value) => onUpdate("gender", value)}>
+            <Select onValueChange={(value) => onUpdate("gender", value)} value={personalInfo.gender || "male"}>
               <SelectTrigger className="bg-white/50 border-gray-200 focus:border-teal hover:border-teal-light transition-colors">
-                <SelectValue placeholder="Select gender" defaultValue={personalInfo.gender || ""} />
+                <SelectValue placeholder="Select gender" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="male">Male</SelectItem>

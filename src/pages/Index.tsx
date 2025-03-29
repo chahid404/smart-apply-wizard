@@ -5,19 +5,16 @@ import { WizardSteps } from "@/components/wizard/WizardSteps";
 import { ExtraInformation, ResumeData } from "@/types/resume";
 import { stepValidations } from "@/utils/stepValidations";
 import { validateStep } from "@/utils/validation";
-import { useAuth } from "@clerk/clerk-react";
-import axios from "axios";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isFirstTime, setIsFirstTime] = useState(true);
-  const { userId, getToken } = useAuth();
   const [formData, setFormData] = useState({
     jobUrl: "",
     resume: null as File | null,
-    savedResumeData: null as ResumeData | null,
+    resumeData: null as ResumeData | null,
     extraInformation: {
       extraDetails: "",
       noticePeriod: "",
@@ -57,13 +54,8 @@ const Index = () => {
 
   // Load saved data on component mount
   useEffect(() => {
-    const savedResumeData = localStorage.getItem("resumeData");
     const hasCompletedFirstTime = localStorage.getItem("hasCompletedFirstTime");
-
-    if (savedResumeData) {
-      setResumeData(JSON.parse(savedResumeData));
-    }
-
+    //TODO update onboarding mechanism using clerk : https://app.itsdart.com/d/BtfCYSAnbFx5/XyLNeDJ39IyI-On-boarding-feauture
     if (hasCompletedFirstTime) {
       setIsFirstTime(false);
     }
@@ -73,7 +65,7 @@ const Index = () => {
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      savedResumeData: resumeData,
+      resumeData,
     }));
   }, [resumeData]);
 
@@ -83,6 +75,7 @@ const Index = () => {
   }, [currentStep]);
 
   const handleNext = async () => {
+    console.log("Form data:", formData);
     const validation = validateStep(currentStep, formData, stepValidations);
 
     if (!validation.isValid) {
@@ -100,11 +93,12 @@ const Index = () => {
         setIsFirstTime(false);
         toast({
           title: "🎈 Awesome job!",
-          description: "We've saved your info for future applications. Next time, it'll be even faster! Just upload your resume and go! 🏃‍♂️💨",
+          description:
+            "We've saved your info for future applications. Next time, it'll be even faster! Just upload your resume and go! 🏃‍♂️💨",
         });
       }
     } else {
-      await handleSubmit();
+      //TODO handle submit (resume, jobUrl, extraInformation) : https://app.itsdart.com/d/BtfCYSAnbFx5/FesSRZOEQQqC-handle-submit-resume-job-url
     }
   };
 
@@ -114,32 +108,9 @@ const Index = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    const token = await getToken();
-
-    console.log("Submitting application:", formData);
-    await axios
-      .get("http://localhost:5000/api/v1/users/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          "X-User-Id": userId,
-        },
-      })
-      .then((res) => {
-        toast({
-          title: "Application submitted successfully!",
-          description: "We'll notify you once it's processed.",
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const handleResumeDataChange = (data: ResumeData) => {
     setResumeData(data);
-    localStorage.setItem("resumeData", JSON.stringify(data));
+    console.log("Resume data updated:", data);
   };
 
   const renderFirstTimeMessage = () => {
@@ -148,7 +119,8 @@ const Index = () => {
     return (
       <div className="mx-2 sm:mx-0 mb-6 p-4 bg-mint/20 rounded-lg border border-mint text-navy animate-fade-in">
         <p className="text-center">
-          🎯 <span className="font-semibold">Pro tip:</span> Don't worry about filling out those boring forms over and over - do it once, and we'll remember everything for your future applications! Let's make job hunting fun! 🚀
+          🎯 <span className="font-semibold">Pro tip:</span> Don't worry about filling out those boring forms over and over - do
+          it once, and we'll remember everything for your future applications! Let's make job hunting fun! 🚀
         </p>
       </div>
     );
@@ -162,7 +134,14 @@ const Index = () => {
 
       <Card className="p-4 sm:p-8 mx-2 sm:mx-0">
         <AnimatePresence mode="wait">
-          <WizardSteps currentStep={currentStep} formData={formData} resumeData={resumeData} onFormDataChange={setFormData} onResumeDataChange={handleResumeDataChange} onResumeDataExtracted={handleResumeDataChange} />
+          <WizardSteps
+            currentStep={currentStep}
+            formData={formData}
+            resumeData={resumeData}
+            onFormDataChange={setFormData}
+            onResumeDataChange={handleResumeDataChange}
+            onResumeDataExtracted={handleResumeDataChange}
+          />
         </AnimatePresence>
         <WizardNavigation currentStep={currentStep} onNext={handleNext} onBack={handleBack} />
       </Card>

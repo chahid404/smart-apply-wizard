@@ -31,7 +31,7 @@ export interface Address {
   country?: string;
 }
 
-interface Experience {
+export interface Experience {
   company: string;
   position: string;
   startDate: string;
@@ -40,19 +40,19 @@ interface Experience {
   description: string[];
 }
 
-interface Education {
+export interface Education {
   institution: string;
   degree: string;
   field: string;
   graduationDate: string;
 }
 
-interface Language {
+export interface Language {
   name: string;
   proficiency: "Basic" | "Intermediate" | "Advanced" | "Fluent" | "Native";
 }
 
-interface Certification {
+export interface Certification {
   name: string;
   issuer: string;
   date: string;

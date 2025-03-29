@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { JobUrlStep } from "@/components/wizard/steps/JobUrlStep";
-import { ResumeStep } from "@/components/wizard/steps/ResumeStep";
-import { PersonalInfoStep } from "@/components/wizard/steps/PersonalInfoStep";
 import { AdditionalInfoStep } from "@/components/wizard/steps/AdditionalInfoStep";
+import { JobUrlStep } from "@/components/wizard/steps/JobUrlStep";
+import { PersonalInfoStep } from "@/components/wizard/steps/PersonalInfoStep";
+import { ResumeStep } from "@/components/wizard/steps/ResumeStep";
 import { ReviewStep } from "@/components/wizard/steps/ReviewStep";
 import { ExtraInformation, ResumeData } from "@/types/resume";
 
@@ -12,6 +12,7 @@ interface WizardStepsProps {
   formData: {
     jobUrl: string;
     resume: File | null;
+    resumeData: ResumeData | null;
     extraInformation: ExtraInformation;
   };
   resumeData: ResumeData | null;
@@ -20,7 +21,14 @@ interface WizardStepsProps {
   onResumeDataExtracted: (data: ResumeData) => void;
 }
 
-export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChange, onResumeDataChange, onResumeDataExtracted }: WizardStepsProps) => {
+export const WizardSteps = ({
+  currentStep,
+  formData,
+  resumeData,
+  onFormDataChange,
+  onResumeDataChange,
+  onResumeDataExtracted,
+}: WizardStepsProps) => {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -48,7 +56,14 @@ export const WizardSteps = ({ currentStep, formData, resumeData, onFormDataChang
           />
         );
       case 5:
-        return <ReviewStep jobUrl={formData.jobUrl} resume={formData.resume} resumeData={resumeData} extraInformation={formData.extraInformation} />;
+        return (
+          <ReviewStep
+            jobUrl={formData.jobUrl}
+            resume={formData.resume}
+            resumeData={resumeData}
+            extraInformation={formData.extraInformation}
+          />
+        );
       default:
         return null;
     }
